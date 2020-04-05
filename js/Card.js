@@ -1,5 +1,6 @@
 class Card{
-    constructor(attack, defence, target, dragable, DOM){
+    constructor(attack, defence, target, dragable, DOM, game){
+        this.game = game
         this.DOM = DOM;
         this.target = target
         this.attack = attack
@@ -9,7 +10,8 @@ class Card{
         this.generateCard()
         this.addEvents()
     }
-    generateCard(){
+    generateCard(){    
+
         this.HTML = `<div class="card" draggable="${this.dragable}">
                         <div class="card-footer">
                             <div class="stat-box atack">${this.attack}</div>
@@ -21,9 +23,19 @@ class Card{
     addEvents(){
         let cards = this.DOM.querySelectorAll(".card")
         let fields = this.DOM.querySelectorAll(".field")
+        let hand = this.DOM.querySelector(".field.player-hand")
         let dragedCard = ''
+        let game = this.game
+        let newCard = this.HTML
         for (let i = 0;i<cards.length;i++){
             let card = cards[i]
+            card.addEventListener("click",function(){
+                console.log(card);
+                
+                hand.insertAdjacentHTML("beforeend", newCard )
+
+                card.remove()
+            })
             card.addEventListener("dragstart", function(e){
                 dragedCard = e.target
                 console.log(dragedCard)
@@ -52,11 +64,15 @@ class Card{
                 field.addEventListener("dragleave", function(){
 
                 })
-                field.addEventListener("drop",function(){
-                    console.log("drop")
+                field.addEventListener("drop",function(e){
+                    
+                    game.enemyCards++
                     this.append(dragedCard)
+                    
                 })
+                break
             }   
+            
         }
     }   
 }

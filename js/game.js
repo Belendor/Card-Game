@@ -9,21 +9,24 @@ const battle = GAME.querySelector(".start-battle")
 
 class Game{
     constructor(){
+        this.enemyCards = null
+        this.playerCards = null
         this.createEnemyCard()
     }
     createPlayerCard(){
-        new Card(1,1, playerHand, true, GAME)
+        new Card(1,1, playerHand, true, GAME, this)
     }
     createEnemyCard(){
-        new Card(1,1,enemyField,false,GAME)
+        new Card(1,1,enemyField, false, GAME, this)
+        
     }
     battle(){
-
-        console.log(playerField.innerHTML);
+        console.log(this.enemyCards);
+        
+        console.log(playerField.querySelectorAll(".card"));
 
     }
 }
-
 
 let newGame = new Game()
 
