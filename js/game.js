@@ -43,14 +43,15 @@ class Game{
        }
        for(let i =0;i<playerCards.length;i++){
         playerCards[i].querySelector(".defence").innerText = playerBattlefield[i][1]
+        playerCards[i].classList.add("animation")
        }
        for(let i =0;i<enemyCards.length;i++){
         enemyCards[i].querySelector(".defence").innerText = enemyBattlefield[i][1]
+       
        }
        setTimeout(function(){
             for(let i =0;i<playerCards.length;i++){
                 if(playerCards[i].querySelector(".defence").innerText == 0){
-                   playerCards[i].classList.add("animation")
                    playerCards[i].remove()
                 }
            }
@@ -59,7 +60,7 @@ class Game{
                     enemyCards[i].remove()
                  }
            }
-       },500)
+       },800)
     }
 }
 
