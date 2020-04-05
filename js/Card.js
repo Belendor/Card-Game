@@ -14,7 +14,7 @@ class Card{
 
         this.HTML = `<div class="card" draggable="${this.dragable}">
                         <div class="card-footer">
-                            <div class="stat-box atack">${this.attack}</div>
+                            <div class="stat-box attack">${this.attack}</div>
                             <div class="stat-box defence">${this.defence}</div>
                         </div>
                     </div>`
@@ -29,13 +29,6 @@ class Card{
         let newCard = this.HTML
         for (let i = 0;i<cards.length;i++){
             let card = cards[i]
-            card.addEventListener("click",function(){
-                console.log(card);
-                
-                hand.insertAdjacentHTML("beforeend", newCard )
-
-                card.remove()
-            })
             card.addEventListener("dragstart", function(e){
                 dragedCard = e.target
                 console.log(dragedCard)
@@ -48,6 +41,8 @@ class Card{
             card.addEventListener("dragend", function(e){
                 setTimeout(function(){
                     card.classList.remove("hidden")
+                    card.setAttribute("draggable", false)
+                    dragedCard = ''
                 },0)
                 console.log("dragend")
             })
@@ -65,12 +60,9 @@ class Card{
 
                 })
                 field.addEventListener("drop",function(e){
-                    
-                    game.enemyCards++
                     this.append(dragedCard)
-                    
                 })
-                break
+            
             }   
             
         }
