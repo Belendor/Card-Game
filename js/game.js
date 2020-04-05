@@ -6,15 +6,25 @@ const playerField = GAME.querySelector('.player-field')
 const playerHand =  GAME.querySelector('.field.player-hand')
 const generateCard = GAME.querySelector(".generate-card")
 const battle = GAME.querySelector(".start-battle")
+const mana = GAME.querySelector(".mana")
 
 class Game{
-    constructor(){
+    constructor(mana){
+        this.mana = mana
         this.enemyCards = null
         this.playerCards = null
         this.createEnemyCard()
+        this.setMana()
+    }
+    setMana(){
+        mana.innerText = "mana: " + this.mana
     }
     createPlayerCard(){
-        new Card(1,1, playerHand, true, GAME, this)
+        if(this.mana>0){
+            new Card(1,1, playerHand, true, GAME, this)
+            this.mana--
+            mana.innerText = "mana: " + this.mana
+        }
     }
     createEnemyCard(){
         new Card(1,1,enemyField, false, GAME, this)
@@ -64,7 +74,7 @@ class Game{
     }
 }
 
-let newGame = new Game()
+let newGame = new Game(1)
 
 
 generateCard.addEventListener("click", function(){
