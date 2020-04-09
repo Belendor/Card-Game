@@ -31,9 +31,6 @@ class Card{
             let card = cards[i]
             card.addEventListener("dragstart", function(e){
                 dragedCard = e.target
-                console.log(dragedCard)
-                console.log("dragstart")
-
                 setTimeout(function(){
                     card.classList.add("hidden")
                 },0)
@@ -44,7 +41,6 @@ class Card{
                     card.setAttribute("draggable", false)
                     dragedCard = ''
                 },0)
-                console.log("dragend")
             })
 
             for(let j = 0;j<fields.length; j++){

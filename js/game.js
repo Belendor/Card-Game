@@ -12,12 +12,16 @@ class Game{
     constructor(mana,level){
         this.level = level
         this.mana = mana
+        this.currentlevel = []
         this.enemyCards = null
+        this.enemyCardObjects = []
         this.playerCards = null
-        this.createEnemyCard()
-        this.setMana()
         this.levelCeck()
         this.eventListeners()
+        this.console()
+    }
+    console(){
+        console.log(this)
     }
     eventListeners(){
         let gameClass = this
@@ -30,11 +34,45 @@ class Game{
             gameClass.battle()
         })
     }
+
     levelCeck(){
-        
+        if(this.level === 1){
+            this.createEnemyCard(1)
+            this.setMana(1)
+        }
+        if(this.level === 2){
+            this.mana = 2
+            this.createEnemyCard(2)
+            this.setMana(2)
+        }
+        if(this.level === 3){
+            this.mana = 3
+            this.createEnemyCard(3)
+            this.setMana(3)
+        }
+        if(this.level === 4){
+            this.mana = 4
+            this.createEnemyCard(4)
+            this.setMana(4)
+        }
+        if(this.level === 5){
+            this.mana = 5
+            this.createEnemyCard(5)
+            this.setMana(5)
+        }
+        if(this.level === 6){
+            this.mana = 6
+            this.createEnemyCard(6)
+            this.setMana(6)
+        }
+        if(this.level === 7){
+            this.mana = 7
+            this.createEnemyCard(7)
+            this.setMana(7)
+        }
     }
-    setMana(){
-        mana.innerText = "mana: " + this.mana
+    setMana(num){
+        mana.innerText = "mana: " + num
     }
     createPlayerCard(){
         if(this.mana>0){
@@ -43,8 +81,12 @@ class Game{
             mana.innerText = "mana: " + this.mana
         }
     }
-    createEnemyCard(){
-        new Card(1,1,enemyField, false, GAME, this)
+    createEnemyCard(number){
+        for(let i=0;i<number;i++){
+
+            this.enemyCardObjects.push(new Card(1,1,enemyField, false, GAME, this))
+              
+        }
         
     }
     battle(){
@@ -54,34 +96,38 @@ class Game{
         this.enemyCards = enemyField.querySelectorAll(".card")
         let playerCards = this.playerCards
         let enemyCards = this.enemyCards
-
+// Player Field to array****************
        for(let i =0;i<this.playerCards.length;i++){
-       
-        
-        
-
         playerBattlefield.push([this.playerCards[i].querySelector(".attack").innerText, this.playerCards[i].querySelector(".defence").innerText])
-        console.log(playerBattlefield);
        }
+       console.log(playerBattlefield)
+// **********************
+// Enemy Field to array****************
+       console.log(playerCards);
+       
        for(let i=0;i<this.enemyCards.length;i++){
-        enemyBattlefield.push([this.playerCards[i].querySelector(".attack").innerText, this.playerCards[i].querySelector(".defence").innerText])
-        console.log(enemyBattlefield)
+        enemyBattlefield.push([this.enemyCards[i].querySelector(".attack").innerText, this.enemyCards[i].querySelector(".defence").innerText])
        }
+// **********************
+
        for(let i =0; i< playerBattlefield.length;i++){
            for(let j = 0;j< enemyBattlefield.length;j++){
 
               let battleStartPlayerHealth = playerBattlefield[i][1]
               let battleStartEnemyHealth = enemyBattlefield[j][1]
 
-              if(battleStartPlayerHealth > 0){
+
+              if(battleStartPlayerHealth > 0 && battleStartEnemyHealth>0){
               playerBattlefield[i][1] = parseInt(playerBattlefield[i][1], 10) - parseInt(enemyBattlefield[j][0], 10)
+              enemyBattlefield[j][1] = parseInt(enemyBattlefield[j][1], 10) - parseInt(playerBattlefield[i][0], 10)
               }
               
-              if(battleStartEnemyHealth > 0){       
-              enemyBattlefield[j][1] -= playerBattlefield[i][0]
-              }
+            //   if(battleStartEnemyHealth > 0){       
+            //   enemyBattlefield[j][1] -= playerBattlefield[i][0]
+            //   }
            }
        }
+
        for(let i =0;i<this.playerCards.length;i++){
         this.playerCards[i].querySelector(".defence").innerText = playerBattlefield[i][1]
         this.playerCards[i].classList.add("animation")
@@ -90,8 +136,12 @@ class Game{
         this.enemyCards[i].querySelector(".defence").innerText = enemyBattlefield[i][1]
        
        }
-       setTimeout(function(){
+       setTimeout(()=>{
             for(let i =0;i<playerCards.length;i++){
+            if(this.playerCards[i].classList.contains("animation")){
+                this.playerCards[i].classList.remove("animation")
+            }
+            // console.log(this.playerCards[i])
                 if(playerCards[i].querySelector(".defence").innerText == 0){
                    playerCards[i].remove()
                 }
@@ -101,9 +151,13 @@ class Game{
                     enemyCards[i].remove()
                  }
            }
+         
+           
            if(enemyField.querySelectorAll(".card").length == 0){
-            new Game(2)
+            this.level++
+            this.levelCeck()
            }
+
        },800)
       
     }
@@ -111,5 +165,5 @@ class Game{
     
 }
 
-let newGame = new Game(1)
+let newGame = new Game(1,1)
 
