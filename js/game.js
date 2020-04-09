@@ -15,6 +15,7 @@ class Game{
         this.currentlevel = []
         this.enemyCards = null
         this.enemyCardObjects = []
+        this.playerCardObjects = []
         this.playerCards = null
         this.levelCeck()
         this.eventListeners()
@@ -76,7 +77,7 @@ class Game{
     }
     createPlayerCard(){
         if(this.mana>0){
-            new Card(1,1, playerHand, true, GAME, this)
+            this.playerCardObjects.push(new Card(1,3, playerHand, true, GAME, this)) 
             this.mana--
             mana.innerText = "mana: " + this.mana
         }
@@ -84,8 +85,8 @@ class Game{
     createEnemyCard(number){
         for(let i=0;i<number;i++){
 
-            this.enemyCardObjects.push(new Card(1,1,enemyField, false, GAME, this))
-              
+            
+            this.enemyCardObjects.push(new Card(1,3,enemyField, false, GAME, this))
         }
         
     }
@@ -122,9 +123,6 @@ class Game{
               enemyBattlefield[j][1] = parseInt(enemyBattlefield[j][1], 10) - parseInt(playerBattlefield[i][0], 10)
               }
               
-            //   if(battleStartEnemyHealth > 0){       
-            //   enemyBattlefield[j][1] -= playerBattlefield[i][0]
-            //   }
            }
        }
 
@@ -142,12 +140,12 @@ class Game{
                 this.playerCards[i].classList.remove("animation")
             }
             // console.log(this.playerCards[i])
-                if(playerCards[i].querySelector(".defence").innerText == 0){
+                if(playerCards[i].querySelector(".defence").innerText <=0){
                    playerCards[i].remove()
                 }
            }
             for(let i =0;i<enemyCards.length;i++){
-                if(enemyCards[i].querySelector(".defence").innerText == 0){
+                if(enemyCards[i].querySelector(".defence").innerText <=0){
                     enemyCards[i].remove()
                  }
            }
@@ -156,7 +154,9 @@ class Game{
            if(enemyField.querySelectorAll(".card").length == 0){
             this.level++
             this.levelCeck()
-           }
+           }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
+               this.battle()
+           )
 
        },800)
       

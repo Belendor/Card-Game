@@ -10,7 +10,7 @@ class Card{
         this.generateCard()
         this.addEvents()
     }
-    generateCard(){    
+    generateCard(){
 
         this.HTML = `<div class="card" draggable="${this.dragable}">
                         <div class="card-footer">
@@ -38,7 +38,7 @@ class Card{
             card.addEventListener("dragend", function(e){
                 setTimeout(function(){
                     card.classList.remove("hidden")
-                    card.setAttribute("draggable", false)
+                    // card.setAttribute("draggable", false)
                     dragedCard = ''
                 },0)
             })
