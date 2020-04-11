@@ -4,14 +4,16 @@ let cards = {
         attack: 1,
         defence: 1,
         ability: "Summon 1/1",
-        useAbility: "sumonCat()"},
+        canSummon: true,
+        hasShield: false,},
         
 
         {name: "Dragonspawn",
         attack: 2,
         defence: 3,
         ability: "Taunt",
-        useAbility: ""
+        canSummon: false,
+        hasShield: false,
         },
 
         {
@@ -19,7 +21,8 @@ let cards = {
         attack: 1,
         defence: 1,
         ability: "Divine shield",
-        useAbility: ""
+        canSummon: false,
+        hasShield: true,
         }
     ],
     tokens: [

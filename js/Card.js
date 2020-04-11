@@ -11,16 +11,20 @@ class Card{
         this.defence = defence
         this.dragable = dragable
         this.HTML = null
+        this.canSummon = false
+        this.hasShield = false
         this.generateCard()
         this.addEvents()
     }
     generateCard(){
         if(this.cardLevel === 1){
-            let radomCard = Math.floor(Math.random()*1)
+            let radomCard = Math.floor(Math.random()*3)
             let selectedCard = cards.level1[radomCard]
             this.attack = selectedCard.attack
             this.defence = selectedCard.defence
-            let metod = selectedCard.useAbility
+            this.canSummon = selectedCard.canSummon
+            this.hasShield = selectedCard.hasShield
+
    
         
             let HTML = `<div class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
@@ -32,7 +36,7 @@ class Card{
             </div>
             </div>`
             this.game.cardIndex++
-            this.game.battleCry++
+            
 
             this.target.insertAdjacentHTML("beforeend", HTML )
 
@@ -40,7 +44,12 @@ class Card{
         
             this.HTML = this.target.querySelector(id)
 
-
+            if(this.hasShield){
+                this.HTML.classList.add("shield")
+            }
+            if(this.canSummon){
+                this.game.battleCry++
+            }
 
         }else{
             this.HTML = `<div class="card token" draggable="${this.dragable}">
@@ -74,10 +83,6 @@ class Card{
             })
             card.addEventListener("dragend", ()=>{
                 setTimeout(()=>{
-
-                
-
-
                     card.classList.remove("hidden")
                     // card.setAttribute("draggable", false)
                     dragedCard = ''
@@ -152,6 +157,7 @@ class Card{
         }
     }
     sumonCat(){
+        if(this.canSummon)
         this.game.playerCardObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,2))
     }
 }

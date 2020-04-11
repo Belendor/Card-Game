@@ -20,7 +20,7 @@ class Game{
         this.playerCardObjects = []
         this.playerCards = null
         this.cardIndex = 0
-        this.battleCry = 1
+        this.battleCry = 0
         this.levelCeck()
         this.eventListeners()
         this.console()
@@ -91,8 +91,23 @@ class Game{
     }
 
     createEnemyCard(number){
-        for(let i=0;i<number;i++){
-            this.enemyCardObjects.push(new Card(1,1,enemyField, false, GAME, this, 2))
+        if(number == 1){
+            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 2))
+        }
+        if(number == 2){
+            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
+        }
+        if(number == 3){
+            this.enemyCardObjects.push(new Card(6,6,enemyField, false, GAME, this, 2))
+        }
+        if(number == 4){
+            this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 2))
+        }
+        if(number == 5){
+            this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 2))
+        }
+        if(number == 6){
+            this.enemyCardObjects.push(new Card(12,12,enemyField, false, GAME, this, 2))
         }
         
     }
@@ -106,6 +121,10 @@ class Game{
 // Player Field to array****************
        for(let i =0;i<this.playerCards.length;i++){
         playerBattlefield.push([this.playerCards[i].querySelector(".attack").innerText, this.playerCards[i].querySelector(".defence").innerText])
+        if(this.playerCards[i].classList.contains("shield")){
+            playerBattlefield[i].push(1)
+            this.playerCards[i].classList.remove("shield")
+        }
        }
        console.log(playerBattlefield)
 // **********************
@@ -118,12 +137,19 @@ class Game{
 // **********************
        for(let i =0; i< playerBattlefield.length;i++){
            for(let j = 0;j< enemyBattlefield.length;j++){
+               let battleStartPlayerHealth = playerBattlefield[i][1]
+               let battleStartEnemyHealth = enemyBattlefield[j][1]
+               
+               
+               if(battleStartPlayerHealth > 0 && battleStartEnemyHealth>0){
 
-              let battleStartPlayerHealth = playerBattlefield[i][1]
-              let battleStartEnemyHealth = enemyBattlefield[j][1]
+                if(playerBattlefield[i][2] === 1){
+                    playerBattlefield[i][1] = parseInt(playerBattlefield[i][1], 10) + parseInt(enemyBattlefield[j][0], 10)
+                    console.log(playerBattlefield[i][2])
+                    playerBattlefield[i][2] = 0
+                    console.log(playerBattlefield[i][2])
+                }   
 
-
-              if(battleStartPlayerHealth > 0 && battleStartEnemyHealth>0){
               playerBattlefield[i][1] = parseInt(playerBattlefield[i][1], 10) - parseInt(enemyBattlefield[j][0], 10)
               enemyBattlefield[j][1] = parseInt(enemyBattlefield[j][1], 10) - parseInt(playerBattlefield[i][0], 10)
               }
