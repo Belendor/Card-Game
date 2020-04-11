@@ -1,7 +1,11 @@
+import cards from "./data.js"
+
 class Card{
-    constructor(attack, defence, target, dragable, DOM, game){
-        this.game = game
+    constructor(attack, defence, target, dragable, DOM, game, cardLevel){
+        this.cardLevel = cardLevel;
+        this.game = game;
         this.DOM = DOM;
+        this.index = 0;
         this.target = target
         this.attack = attack
         this.defence = defence
@@ -11,24 +15,108 @@ class Card{
         this.addEvents()
     }
     generateCard(){
+        if(this.cardLevel === 1){
+            let radomCard = Math.floor(Math.random()*1)
+            let selectedCard = cards.level1[radomCard]
+            this.attack = selectedCard.attack
+            this.defence = selectedCard.defence
+            let metod = selectedCard.useAbility
+   
+        
+            let HTML = `<div class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            <div class="card-description">${selectedCard.ability}</div>
+            <div class="card-name">${selectedCard.name}</div>
+            <div class="card-footer">
+                <div class="stat-box attack">${selectedCard.attack}</div>
+                <div class="stat-box defence">${selectedCard.defence}</div>
+            </div>
+            </div>`
+            this.game.cardIndex++
+            this.game.battleCry++
 
-        this.HTML = `<div class="card" draggable="${this.dragable}">
-                        <div class="card-footer">
-                            <div class="stat-box attack">${this.attack}</div>
-                            <div class="stat-box defence">${this.defence}</div>
-                        </div>
-                    </div>`
-        this.target.insertAdjacentHTML("beforeend", this.HTML )
+            this.target.insertAdjacentHTML("beforeend", HTML )
+
+            let id = "#Nr"+ (this.game.cardIndex - 1)
+        
+            this.HTML = this.target.querySelector(id)
+
+
+
+        }else{
+            this.HTML = `<div class="card token" draggable="${this.dragable}">
+            <div class="card-footer">
+                <div class="stat-box attack">${this.attack}</div>
+                <div class="stat-box defence">${this.defence}</div>
+            </div>
+            </div>`
+            this.target.insertAdjacentHTML("beforeend", this.HTML )
+        }
+        
     }
     addEvents(){
-        let cards = this.DOM.querySelectorAll(".card")
+        let cards = this.DOM.querySelectorAll(".card.player")
+        let tokens = this.DOM.querySelectorAll(".card.token")
         let fields = this.DOM.querySelectorAll(".field")
         let hand = this.DOM.querySelector(".field.player-hand")
         let dragedCard = ''
-        let game = this.game
-        let newCard = this.HTML
+        
+
         for (let i = 0;i<cards.length;i++){
+
+            console.log(this.game.playerCardObjects)
+
             let card = cards[i]
+            card.addEventListener("dragstart", function(e){
+                dragedCard = e.target
+                setTimeout(function(){
+                    card.classList.add("hidden")
+                },0)
+            })
+            card.addEventListener("dragend", ()=>{
+                setTimeout(()=>{
+
+                
+
+
+                    card.classList.remove("hidden")
+                    // card.setAttribute("draggable", false)
+                    dragedCard = ''
+                },0)
+            })
+
+            for(let j = 0;j<fields.length; j++){
+                let field = fields[j]
+                field.addEventListener("dragover",function(e){
+                    e.preventDefault()
+                    
+                })
+                field.addEventListener("dragenter", function(){
+
+                })
+                field.addEventListener("dragleave", function(){
+
+                })
+                field.addEventListener("drop",()=>{
+                   
+                    field.append(dragedCard)
+
+                    if(this.game.battleCry>0 && field.classList.contains("player-field")){
+                        this.sumonCat()
+                        this.game.battleCry--
+                    }
+                })
+            
+            }   
+            
+        }
+
+        // ******** TOKENS ********
+
+        for (let i = 0;i<tokens.length;i++){
+
+            console.log(this.game.playerCardObjects)
+
+            let card = tokens[i]
             card.addEventListener("dragstart", function(e){
                 dragedCard = e.target
                 setTimeout(function(){
@@ -62,7 +150,10 @@ class Card{
             }   
             
         }
-    }   
+    }
+    sumonCat(){
+        this.game.playerCardObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,2))
+    }
 }
 
 export default Card

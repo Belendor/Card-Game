@@ -7,6 +7,8 @@ const playerHand =  GAME.querySelector('.field.player-hand')
 const generateCard = GAME.querySelector(".generate-card")
 const battle = GAME.querySelector(".start-battle")
 const mana = GAME.querySelector(".mana")
+const chooseField = GAME.querySelector(".choose-card")
+const endSelect = GAME.querySelector(".end-select")
 
 class Game{
     constructor(mana,level){
@@ -17,6 +19,8 @@ class Game{
         this.enemyCardObjects = []
         this.playerCardObjects = []
         this.playerCards = null
+        this.cardIndex = 0
+        this.battleCry = 1
         this.levelCeck()
         this.eventListeners()
         this.console()
@@ -33,6 +37,9 @@ class Game{
         
         battle.addEventListener("click", function(){
             gameClass.battle()
+        })
+        endSelect.addEventListener("click", function(){
+            gameClass.endSelect()
         })
     }
 
@@ -77,16 +84,15 @@ class Game{
     }
     createPlayerCard(){
         if(this.mana>0){
-            this.playerCardObjects.push(new Card(1,3, playerHand, true, GAME, this)) 
+            this.playerCardObjects.push(new Card(1,3, chooseField, true, GAME, this, 1)) 
             this.mana--
             mana.innerText = "mana: " + this.mana
         }
     }
+
     createEnemyCard(number){
         for(let i=0;i<number;i++){
-
-            
-            this.enemyCardObjects.push(new Card(1,3,enemyField, false, GAME, this))
+            this.enemyCardObjects.push(new Card(1,1,enemyField, false, GAME, this, 2))
         }
         
     }
@@ -110,7 +116,6 @@ class Game{
         enemyBattlefield.push([this.enemyCards[i].querySelector(".attack").innerText, this.enemyCards[i].querySelector(".defence").innerText])
        }
 // **********************
-
        for(let i =0; i< playerBattlefield.length;i++){
            for(let j = 0;j< enemyBattlefield.length;j++){
 
@@ -161,7 +166,9 @@ class Game{
        },800)
       
     }
-
+    endSelect(){ 
+        chooseField.classList.toggle("hidden")
+    }
     
 }
 
