@@ -13,11 +13,16 @@ class Card{
         this.HTML = null
         this.canSummon = false
         this.hasShield = false
+        this.battleCryReduced = false
         this.generateCard()
         this.addEvents()
     }
+
     generateCard(){
         if(this.cardLevel === 1){
+
+            console.log("generate card paleistas");
+            
             let radomCard = Math.floor(Math.random()*3)
             let selectedCard = cards.level1[radomCard]
             this.attack = selectedCard.attack
@@ -44,11 +49,16 @@ class Card{
         
             this.HTML = this.target.querySelector(id)
 
+            this.game.playerCardObjects.push(this)
+
             if(this.hasShield){
                 this.HTML.classList.add("shield")
             }
+
             if(this.canSummon){
                 this.game.battleCry++
+                this.battleCryReduced = true
+                console.log(this.game.battleCry);
             }
 
         }else{
@@ -59,28 +69,29 @@ class Card{
             </div>
             </div>`
             this.target.insertAdjacentHTML("beforeend", this.HTML )
-        }
-        
+        } 
     }
+
     addEvents(){
-        let cards = this.DOM.querySelectorAll(".card.player")
+        let cards = this.game.playerCardObjects
         let tokens = this.DOM.querySelectorAll(".card.token")
         let fields = this.DOM.querySelectorAll(".field")
         let hand = this.DOM.querySelector(".field.player-hand")
         let dragedCard = ''
         
-
+        console.log("paleidziamas event");
+        
         for (let i = 0;i<cards.length;i++){
-
-            console.log(this.game.playerCardObjects)
-
-            let card = cards[i]
+            let cardObject = cards[i]
+            let card = cards[i].HTML
+            console.log(card)
             card.addEventListener("dragstart", function(e){
                 dragedCard = e.target
                 setTimeout(function(){
                     card.classList.add("hidden")
                 },0)
             })
+            
             card.addEventListener("dragend", ()=>{
                 setTimeout(()=>{
                     card.classList.remove("hidden")
@@ -93,7 +104,6 @@ class Card{
                 let field = fields[j]
                 field.addEventListener("dragover",function(e){
                     e.preventDefault()
-                    
                 })
                 field.addEventListener("dragenter", function(){
 
@@ -102,24 +112,30 @@ class Card{
 
                 })
                 field.addEventListener("drop",()=>{
+                   console.log("dropped")
                    
-                    field.append(dragedCard)
+                   if(this.game.battleCry > 0 && field.classList.contains("player-field")){
+                       console.log("must summon");
+                       console.log(dragedCard);
+                       
+                       console.log(cardObject);
 
-                    if(this.game.battleCry>0 && field.classList.contains("player-field")){
-                        this.sumonCat()
-                        this.game.battleCry--
+                       if(cardObject.battleCryReduced){
+                            cardObject.battleCryReduced = false
+                            this.sumonCat()
+                            if(this.canSummon){
+                               this.game.battleCry--
+                            }
+                        }
                     }
+                    field.append(dragedCard)
                 })
-            
-            }   
-            
+            }     
         }
 
         // ******** TOKENS ********
 
         for (let i = 0;i<tokens.length;i++){
-
-            console.log(this.game.playerCardObjects)
 
             let card = tokens[i]
             card.addEventListener("dragstart", function(e){
@@ -157,8 +173,9 @@ class Card{
         }
     }
     sumonCat(){
+        console.log(this.canSummon);
         if(this.canSummon)
-        this.game.playerCardObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,2))
+        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,2))
     }
 }
 

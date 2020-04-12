@@ -14,6 +14,7 @@
         margin-top: 40 px;
         user-select: none;
         text-align: center;
+        position: relative
     }
         .field{
             display: inline-block;
@@ -49,14 +50,19 @@
     display: inline-block;
     position: relative;
 }
-     .field.choose-card{
+
+    .choose-card{
     position: absolute;
-    top: -5px;
+    top: 200px;
     left:0;
-    width: 100%;
-    height: 100%;
     z-index:2;
     background-color:rgba(0, 0, 255, 0.459);
+    display: inline-block;
+    width: 100%;
+    height: 150px;
+    border: solid 2px black;
+    text-align: center;
+    margin: 5px 0;
 
 }
 

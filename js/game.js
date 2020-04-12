@@ -18,6 +18,7 @@ class Game{
         this.enemyCards = null
         this.enemyCardObjects = []
         this.playerCardObjects = []
+        this.playerTokenObjects = []
         this.playerCards = null
         this.cardIndex = 0
         this.battleCry = 0
@@ -26,7 +27,6 @@ class Game{
         this.console()
     }
     console(){
-        console.log(this)
     }
     eventListeners(){
         let gameClass = this
@@ -84,7 +84,7 @@ class Game{
     }
     createPlayerCard(){
         if(this.mana>0){
-            this.playerCardObjects.push(new Card(1,3, chooseField, true, GAME, this, 1)) 
+            new Card(1,3, chooseField, true, GAME, this, 1)
             this.mana--
             mana.innerText = "mana: " + this.mana
         }
@@ -166,6 +166,11 @@ class Game{
        
        }
        setTimeout(()=>{
+           for(let i =0;i<this.playerCardObjects.length;i++){
+               if(this.playerCardObjects[i].HTML.querySelector(".stat-box.defence").innerText <=0){
+                this.playerCardObjects.splice(i,1)
+               }
+           }
             for(let i =0;i<playerCards.length;i++){
             if(this.playerCards[i].classList.contains("animation")){
                 this.playerCards[i].classList.remove("animation")
