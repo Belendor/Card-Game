@@ -32,7 +32,7 @@ let cards = {
         name: "Selfless hero",
         attack: 2,
         defence: 1,
-        ability: "Gives Shield to next Card",
+        ability: "Gives Shield to next Card when dead",
         deathrattle: true,
         canSummon: false,
         hasShield: false,

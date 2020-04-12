@@ -112,7 +112,8 @@ class Game{
             this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
         }
         if(number == 4){
-            this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(5,5,enemyField, false, GAME, this, 2))
         }
         if(number == 5){
             this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 2))
@@ -164,7 +165,6 @@ class Game{
               playerBattlefield[i][1] = parseInt(playerBattlefield[i][1], 10) - parseInt(enemyBattlefield[j][0], 10)
               enemyBattlefield[j][1] = parseInt(enemyBattlefield[j][1], 10) - parseInt(playerBattlefield[i][0], 10)
               }
-              
            }
            break
        }
