@@ -151,6 +151,21 @@
     padding: 15px 0;
     text-align: center;
 }
+
+.deathrattle{
+    display: inline-block;
+    background-color: yellow;
+}
+.deathrattle::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(37, 37, 32, 0.527);
+}
+
 .shield{
     display: inline-block;
     background-color: yellow;
@@ -163,4 +178,5 @@
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 0, 0.527);
+    z-index: 1
 }

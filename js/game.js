@@ -108,7 +108,8 @@ class Game{
             this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
         }
         if(number == 3){
-            this.enemyCardObjects.push(new Card(6,6,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(3,3,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
         }
         if(number == 4){
             this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 2))
@@ -165,16 +166,27 @@ class Game{
               }
               
            }
+           break
        }
 
        for(let i =0;i<this.playerCards.length;i++){
         this.playerCards[i].querySelector(".defence").innerText = playerBattlefield[i][1]
         this.playerCards[i].classList.add("animation")
+        break
        }
        for(let i =0;i<enemyCards.length;i++){
         this.enemyCards[i].querySelector(".defence").innerText = enemyBattlefield[i][1]
        
        }
+
+       if(playerCards[0].querySelector(".defence").innerText <=0 && playerCards[0].classList.contains("deathrattle") && playerCards[0].classList.contains("addShield")){
+              
+        if(playerCards.length >1){
+        
+        this.addShield(playerCards[1])
+        }
+    }
+
        setTimeout(()=>{
            for(let i =0;i<this.playerCardObjects.length;i++){
                if(this.playerCardObjects[i].HTML.querySelector(".stat-box.defence").innerText <=0){
@@ -187,8 +199,15 @@ class Game{
             }
             // console.log(this.playerCards[i])
                 if(playerCards[i].querySelector(".defence").innerText <=0){
-                   playerCards[i].remove()
+              
+                    if(playerCards.length >1){
+                    
+                    this.addShield(playerCards[1])
+                    }
+
+                    playerCards[i].remove()
                 }
+
            }
             for(let i =0;i<enemyCards.length;i++){
                 if(enemyCards[i].querySelector(".defence").innerText <=0){
@@ -204,7 +223,7 @@ class Game{
                this.battle()
            )
 
-       },800)
+       },1200)
       
     }
     endSelect(){ 
@@ -214,6 +233,9 @@ class Game{
         }else{
             toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
         }
+    }
+    addShield(target){
+        target.classList.add("shield")
     }
     
 }

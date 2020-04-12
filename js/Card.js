@@ -13,6 +13,7 @@ class Card{
         this.HTML = null
         this.canSummon = false
         this.hasShield = false
+        this.deathrattle = false
         this.battleCryReduced = false
         this.generateCard()
         this.addEvents()
@@ -23,13 +24,13 @@ class Card{
 
             console.log("generate card paleistas");
             
-            let radomCard = Math.floor(Math.random()*3)
+            let radomCard = Math.floor(Math.random()*4)
             let selectedCard = cards.level1[radomCard]
             this.attack = selectedCard.attack
             this.defence = selectedCard.defence
             this.canSummon = selectedCard.canSummon
             this.hasShield = selectedCard.hasShield
-
+            this.deathrattle = selectedCard.deathrattle
    
         
             let HTML = `<div class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
@@ -53,6 +54,9 @@ class Card{
 
             if(this.hasShield){
                 this.HTML.classList.add("shield")
+            }
+            if(this.deathrattle){
+                this.HTML.classList.add("deathrattle", "addShield")
             }
 
             if(this.canSummon){

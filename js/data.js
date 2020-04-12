@@ -5,7 +5,8 @@ let cards = {
         defence: 1,
         ability: "Summon 1/1",
         canSummon: true,
-        hasShield: false,},
+        hasShield: false,
+        deathrattle: false,},
         
 
         {name: "Dragonspawn",
@@ -14,6 +15,7 @@ let cards = {
         ability: "Taunt",
         canSummon: false,
         hasShield: false,
+        deathrattle: false,
         },
 
         {
@@ -23,7 +25,19 @@ let cards = {
         ability: "Divine shield",
         canSummon: false,
         hasShield: true,
-        }
+        deathrattle: false,
+        },
+
+        {
+        name: "Selfless hero",
+        attack: 2,
+        defence: 1,
+        ability: "Gives Shield to next Card",
+        deathrattle: true,
+        canSummon: false,
+        hasShield: false,
+        },
+
     ],
     tokens: [
         {name: "cat",
