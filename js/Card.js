@@ -2,14 +2,14 @@ import cards from "./data.js"
 
 class Card{
     constructor(attack, defence, target, dragable, DOM, game, cardLevel){
+        this.attack = attack
+        this.defence = defence
+        this.target = target
+        this.dragable = dragable
         this.cardLevel = cardLevel;
         this.game = game;
         this.DOM = DOM;
         this.index = 0;
-        this.target = target
-        this.attack = attack
-        this.defence = defence
-        this.dragable = dragable
         this.HTML = null
         this.canSummon = false
         this.hasShield = false

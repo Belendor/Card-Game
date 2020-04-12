@@ -4,22 +4,26 @@ const GAME = document.querySelector(".game")
 const enemyField = GAME.querySelector('.enemy-field')
 const playerField = GAME.querySelector('.player-field')
 const playerHand =  GAME.querySelector('.field.player-hand')
-const generateCard = GAME.querySelector(".generate-card")
-const battle = GAME.querySelector(".start-battle")
-const mana = GAME.querySelector(".mana")
 const chooseField = GAME.querySelector(".choose-card")
-const endSelect = GAME.querySelector(".end-select")
+
+// ******Changable HTML elements*******
+const mana = GAME.querySelector(".mana")
+// ******Buttons*******
+const toggleShop = GAME.querySelector(".end-select")
+const battle = GAME.querySelector(".start-battle")
+const generateCard = GAME.querySelector(".generate-card")
+
+
 
 class Game{
-    constructor(mana,level){
+    constructor(level){
         this.level = level
-        this.mana = mana
-        this.currentlevel = []
+        this.mana = null
+        this.playerCards = null
         this.enemyCards = null
-        this.enemyCardObjects = []
         this.playerCardObjects = []
         this.playerTokenObjects = []
-        this.playerCards = null
+        this.enemyCardObjects = []
         this.cardIndex = 0
         this.battleCry = 0
         this.levelCeck()
@@ -29,17 +33,15 @@ class Game{
     console(){
     }
     eventListeners(){
-        let gameClass = this
-        
-        generateCard.addEventListener("click", function(){
-            gameClass.createPlayerCard()
+        generateCard.addEventListener("click",()=>{
+            this.createPlayerCard()
         })
         
-        battle.addEventListener("click", function(){
-            gameClass.battle()
+        battle.addEventListener("click", ()=>{
+            this.battle()
         })
-        endSelect.addEventListener("click", function(){
-            gameClass.endSelect()
+        toggleShop.addEventListener("click", ()=>{
+            this.endSelect()
         })
     }
 
@@ -79,14 +81,22 @@ class Game{
             this.setMana(7)
         }
     }
+
     setMana(num){
-        mana.innerText = "mana: " + num
+        mana.innerHTML =   `Gold: <span style="color: #DAA520; font-size: 30px;">${num}</span>`
+        this.mana = num;
     }
+
     createPlayerCard(){
         if(this.mana>0){
             new Card(1,3, chooseField, true, GAME, this, 1)
             this.mana--
-            mana.innerText = "mana: " + this.mana
+            mana.innerHTML = `Gold: <span style="color: #DAA520; font-size: 30px;">${this.mana}</span>`
+        }else{
+            generateCard.innerHTML = `Not enough GOLD!`
+            setTimeout(function(){
+                generateCard.innerText = "Generate card"
+            },1000)
         }
     }
 
@@ -199,9 +209,14 @@ class Game{
     }
     endSelect(){ 
         chooseField.classList.toggle("hidden")
+        if(chooseField.classList.contains("hidden")){
+            toggleShop.innerHTML = `Show <span style="font-weight: bold;">Shop</span>`
+        }else{
+            toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
+        }
     }
     
 }
 
-let newGame = new Game(1,1)
+let newGame = new Game(1)
 
