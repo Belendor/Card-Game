@@ -51,36 +51,43 @@ class Game{
         if(this.level === 1){
             this.createEnemyCard(1)
             this.setMana(1)
+            this.cardIndexToAttack = 0
         }
         if(this.level === 2){
             this.mana = 2
             this.createEnemyCard(2)
             this.setMana(2)
+            this.cardIndexToAttack = 0
         }
         if(this.level === 3){
             this.mana = 3
             this.createEnemyCard(3)
             this.setMana(3)
+            this.cardIndexToAttack = 0
         }
         if(this.level === 4){
             this.mana = 4
             this.createEnemyCard(4)
             this.setMana(4)
+            this.cardIndexToAttack = 0
         }
         if(this.level === 5){
             this.mana = 5
             this.createEnemyCard(5)
             this.setMana(5)
+            this.cardIndexToAttack = 0
         }
         if(this.level === 6){
             this.mana = 6
             this.createEnemyCard(6)
             this.setMana(6)
+            this.cardIndexToAttack = 0
         }
         if(this.level === 7){
             this.mana = 7
             this.createEnemyCard(7)
             this.setMana(7)
+            this.cardIndexToAttack = 0
         }
     }
 
@@ -152,24 +159,24 @@ class Game{
         let randomEnemy = Math.floor(Math.random()*enemyBattlefield.length)
 
         // Jei yra Shield**********************
-        console.log(playerBattlefield[this.cardIndexToAttack], "arr yra shield", this.cardIndexToAttack )
+        if(playerBattlefield[this.cardIndexToAttack] != undefined){
         if(playerBattlefield[this.cardIndexToAttack][2] === 1){
             
             playerBattlefield[this.cardIndexToAttack][1] = parseInt(playerBattlefield[this.cardIndexToAttack][1],10) + parseInt(enemyBattlefield[randomEnemy][0],10)
             
             this.playerCards[this.cardIndexToAttack].classList.remove("shield")
             playerBattlefield[this.cardIndexToAttack][2] = 0
-        }   
+        }}
         // ************************************
-
         playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomEnemy][0]
         enemyBattlefield[randomEnemy][1] = enemyBattlefield[randomEnemy][1] - playerBattlefield[this.cardIndexToAttack][0]
-
         this.playerCards[this.cardIndexToAttack].classList.add("animation")
+       
+       
         
         this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
         this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
-       
+    
          //    ********Deathrattle*************
        
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <=0 &&
@@ -186,16 +193,24 @@ class Game{
         }
 
        setTimeout(()=>{
+        
         this.playerCards[this.cardIndexToAttack].classList.remove("animation")
-
+       
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <= 0){
             this.playerCards[this.cardIndexToAttack].remove()
+            if(this.cardIndexToAttack == playerField.querySelectorAll(".card").length && this.cardIndexToAttack>0){
+                this.cardIndexToAttack = 0
+            }
         }else{
             if(playerField.querySelectorAll(".card").length > 0){
-                if(playerField.querySelectorAll(".card").length-1 >= this.cardIndexToAttack){
+                console.log(playerField.querySelectorAll(".card").length-1, this.cardIndexToAttack);
+                
+                if(playerField.querySelectorAll(".card").length-1 <= this.cardIndexToAttack){
                     this.cardIndexToAttack = 0
                 }else{
+
                     this.cardIndexToAttack++
+                    console.log(this.cardIndexToAttack)
                 }
             }
         }
@@ -211,7 +226,7 @@ class Game{
         }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
             this.battle()
         )
-
+            
         // let cardsLefinHand = playerHand.querySelectorAll(".card")
         // let cardsLefinShop = chooseField.querySelectorAll(".card")
         // console.log(cardsLefinHand, cardsLefinShop, this.mana);
