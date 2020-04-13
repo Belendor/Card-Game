@@ -8,7 +8,6 @@ let cards = {
         hasShield: false,
         deathrattle: false,},
         
-
         {name: "Dragonspawn",
         attack: 2,
         defence: 3,

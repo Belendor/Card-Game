@@ -5,6 +5,7 @@ const enemyField = GAME.querySelector('.enemy-field')
 const playerField = GAME.querySelector('.player-field')
 const playerHand =  GAME.querySelector('.field.player-hand')
 const chooseField = GAME.querySelector(".choose-card")
+const lostScreen =  document.querySelector(".lost-screen")
 
 // ******Changable HTML elements*******
 const mana = GAME.querySelector(".mana")
@@ -26,6 +27,7 @@ class Game{
         this.enemyCardObjects = []
         this.cardIndex = 0
         this.battleCry = 0
+        this.cardIndexToAttack = 0
         this.levelCeck()
         this.eventListeners()
         this.console()
@@ -112,8 +114,9 @@ class Game{
             this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
         }
         if(number == 4){
-            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
-            this.enemyCardObjects.push(new Card(5,5,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(9,9,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(7,7,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 2))
         }
         if(number == 5){
             this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 2))
@@ -130,102 +133,98 @@ class Game{
         this.enemyCards = enemyField.querySelectorAll(".card")
         let playerCards = this.playerCards
         let enemyCards = this.enemyCards
-// Player Field to array****************
+
+        // Player Field to array****************
        for(let i =0;i<this.playerCards.length;i++){
         playerBattlefield.push([this.playerCards[i].querySelector(".attack").innerText, this.playerCards[i].querySelector(".defence").innerText])
-        if(this.playerCards[i].classList.contains("shield")){
-            playerBattlefield[i].push(1)
-            this.playerCards[i].classList.remove("shield")
-        }
+
+            if(this.playerCards[i].classList.contains("shield")){
+                playerBattlefield[i].push(1)
+            }
        }
-       console.log(playerBattlefield)
-// **********************
-// Enemy Field to array****************
-       console.log(playerCards);
-       
+        // ************************************
+        // Enemy Field to array****************   
        for(let i=0;i<this.enemyCards.length;i++){
         enemyBattlefield.push([this.enemyCards[i].querySelector(".attack").innerText, this.enemyCards[i].querySelector(".defence").innerText])
        }
-// **********************
-       for(let i =0; i< playerBattlefield.length;i++){
-           for(let j = 0;j< enemyBattlefield.length;j++){
-               let battleStartPlayerHealth = playerBattlefield[i][1]
-               let battleStartEnemyHealth = enemyBattlefield[j][1]
-               
-               
-               if(battleStartPlayerHealth > 0 && battleStartEnemyHealth>0){
+        // ************************************
 
-                if(playerBattlefield[i][2] === 1){
-                    playerBattlefield[i][1] = parseInt(playerBattlefield[i][1], 10) + parseInt(enemyBattlefield[j][0], 10)
-                    console.log(playerBattlefield[i][2])
-                    playerBattlefield[i][2] = 0
-                    console.log(playerBattlefield[i][2])
-                }   
+        let randomEnemy = Math.floor(Math.random()*enemyBattlefield.length)
 
-              playerBattlefield[i][1] = parseInt(playerBattlefield[i][1], 10) - parseInt(enemyBattlefield[j][0], 10)
-              enemyBattlefield[j][1] = parseInt(enemyBattlefield[j][1], 10) - parseInt(playerBattlefield[i][0], 10)
-              }
-           }
-           break
-       }
+        // Jei yra Shield**********************
+        console.log(playerBattlefield[this.cardIndexToAttack], "arr yra shield", this.cardIndexToAttack )
+        if(playerBattlefield[this.cardIndexToAttack][2] === 1){
+            
+            playerBattlefield[this.cardIndexToAttack][1] = parseInt(playerBattlefield[this.cardIndexToAttack][1],10) + parseInt(enemyBattlefield[randomEnemy][0],10)
+            
+            this.playerCards[this.cardIndexToAttack].classList.remove("shield")
+            playerBattlefield[this.cardIndexToAttack][2] = 0
+        }   
+        // ************************************
 
-       for(let i =0;i<this.playerCards.length;i++){
-        this.playerCards[i].querySelector(".defence").innerText = playerBattlefield[i][1]
-        this.playerCards[i].classList.add("animation")
-        break
-       }
-       for(let i =0;i<enemyCards.length;i++){
-        this.enemyCards[i].querySelector(".defence").innerText = enemyBattlefield[i][1]
-       
-       }
+        playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomEnemy][0]
+        enemyBattlefield[randomEnemy][1] = enemyBattlefield[randomEnemy][1] - playerBattlefield[this.cardIndexToAttack][0]
 
-       if(playerCards[0].querySelector(".defence").innerText <=0 && playerCards[0].classList.contains("deathrattle") && playerCards[0].classList.contains("addShield")){
-              
-        if(playerCards.length >1){
+        this.playerCards[this.cardIndexToAttack].classList.add("animation")
         
-        this.addShield(playerCards[1])
+        this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
+        this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
+       
+         //    ********Deathrattle*************
+       
+        if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <=0 &&
+        this.playerCards[this.cardIndexToAttack].classList.contains("deathrattle") && 
+        this.playerCards[this.cardIndexToAttack].classList.contains("addShield")){
+              
+            if(playerField.querySelectorAll(".card").length > 0){
+                if(this.cardIndexToAttack+1 < playerField.querySelectorAll(".card").length){
+                 
+                this.addShield(playerField.querySelectorAll(".card").length, this.cardIndexToAttack)
+
+                }
+            }
         }
-    }
 
        setTimeout(()=>{
-           for(let i =0;i<this.playerCardObjects.length;i++){
-               if(this.playerCardObjects[i].HTML.querySelector(".stat-box.defence").innerText <=0){
-                this.playerCardObjects.splice(i,1)
-               }
-           }
-            for(let i =0;i<playerCards.length;i++){
-            if(this.playerCards[i].classList.contains("animation")){
-                this.playerCards[i].classList.remove("animation")
-            }
-            // console.log(this.playerCards[i])
-                if(playerCards[i].querySelector(".defence").innerText <=0){
-              
-                    if(playerCards.length >1){
-                    
-                    this.addShield(playerCards[1])
-                    }
+        this.playerCards[this.cardIndexToAttack].classList.remove("animation")
 
-                    playerCards[i].remove()
+        if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <= 0){
+            this.playerCards[this.cardIndexToAttack].remove()
+        }else{
+            if(playerField.querySelectorAll(".card").length > 0){
+                if(playerField.querySelectorAll(".card").length-1 >= this.cardIndexToAttack){
+                    this.cardIndexToAttack = 0
+                }else{
+                    this.cardIndexToAttack++
                 }
+            }
+        }
 
-           }
-            for(let i =0;i<enemyCards.length;i++){
-                if(enemyCards[i].querySelector(".defence").innerText <=0){
-                    enemyCards[i].remove()
-                 }
-           }
-         
-           
-           if(enemyField.querySelectorAll(".card").length == 0){
-            this.level++
-            this.levelCeck()
-           }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
-               this.battle()
-           )
+        if(this.enemyCards[randomEnemy].querySelector(".defence").innerText <= 0){
+            this.enemyCards[randomEnemy].remove()
+        }
 
-       },1200)
-      
-    }
+        
+        if(enemyField.querySelectorAll(".card").length == 0){
+        this.level++
+        this.levelCeck()
+        }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
+            this.battle()
+        )
+
+        // let cardsLefinHand = playerHand.querySelectorAll(".card")
+        // let cardsLefinShop = chooseField.querySelectorAll(".card")
+        // console.log(cardsLefinHand, cardsLefinShop, this.mana);
+        // if(this.mana == 0 && 
+        //     cardsLefinHand.length <= 0&&
+        //     cardsLefinShop.length <= 0){
+        //         console.log("Defeat");
+                
+        //         lostScreen.classList.remove("hidden")
+        //     }  
+        },1200)
+
+        }
     endSelect(){ 
         chooseField.classList.toggle("hidden")
         if(chooseField.classList.contains("hidden")){
@@ -234,8 +233,13 @@ class Game{
             toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
         }
     }
-    addShield(target){
-        target.classList.add("shield")
+    addShield(ilgis, indexas){
+        let randomindex = Math.floor(Math.random()*ilgis)
+        if(randomindex != indexas){
+            this.playerCards[randomindex].classList.add("shield")
+        }else{
+            this.addShield(ilgis, indexas) 
+        }
     }
     
 }

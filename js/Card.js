@@ -21,8 +21,6 @@ class Card{
 
     generateCard(){
         if(this.cardLevel === 1){
-
-            console.log("generate card paleistas");
             
             let radomCard = Math.floor(Math.random()*4)
             let selectedCard = cards.level1[radomCard]
@@ -60,9 +58,9 @@ class Card{
             }
 
             if(this.canSummon){
-                this.game.battleCry++
+                // this.game.battleCry++
                 this.battleCryReduced = true
-                console.log(this.game.battleCry);
+                // console.log(this.game.battleCry);
             }
 
         }else{
@@ -83,14 +81,12 @@ class Card{
         let hand = this.DOM.querySelector(".field.player-hand")
         let dragedCard = ''
         
-        console.log("paleidziamas event");
-        
         for (let i = 0;i<cards.length;i++){
             let cardObject = cards[i]
             let card = cards[i].HTML
-            console.log(card)
+
             card.addEventListener("dragstart", function(e){
-                dragedCard = e.target
+                dragedCard = card
                 setTimeout(function(){
                     card.classList.add("hidden")
                 },0)
@@ -116,21 +112,16 @@ class Card{
 
                 })
                 field.addEventListener("drop",()=>{
-                   console.log("dropped")
                    
-                   if(this.game.battleCry > 0 && field.classList.contains("player-field")){
-                       console.log("must summon");
-                       console.log(dragedCard);
-                       
-                       console.log(cardObject);
-
-                       if(cardObject.battleCryReduced){
-                            cardObject.battleCryReduced = false
-                            this.sumonCat()
-                            if(this.canSummon){
-                               this.game.battleCry--
-                            }
-                        }
+                   if(this.battleCryReduced && field.classList.contains("player-field")){
+                       this.sumonCat()
+                       this.battleCryReduced = false
+                    //    if(cardObject.battleCryReduced){
+                    //         cardObject.battleCryReduced = false
+                    //         if(this.canSummon){
+                    //            this.game.battleCry--
+                    //         }
+                    //     }
                     }
                     field.append(dragedCard)
                 })
@@ -171,9 +162,7 @@ class Card{
                 field.addEventListener("drop",function(e){
                     this.append(dragedCard)
                 })
-            
             }   
-            
         }
     }
     sumonCat(){

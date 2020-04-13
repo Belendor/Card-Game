@@ -8,13 +8,14 @@
     .main-screen > .game{
         display: inline-block;
         width: 900px;
-        height: 600px;
+        height: 700px;
         border: 2px solid red;
         margin-left: calc(50% - 450px);
-        margin-top: 40 px;
         user-select: none;
         text-align: center;
-        position: relative
+        position: relative;
+        margin-top: 20px;
+        
     }
         .field{
             display: inline-block;
@@ -27,10 +28,12 @@
         .main-screen > .game > .enemy-field{
             display: inline-block;
             width: 100%;
-            height: 150px;
-            border: solid 2px black;
+            height: 164px;
+            border: solid 7px rgb(177, 20, 20);
             text-align: center;
             margin: 5px 0;
+            border-radius: 5px;
+            padding: 3px 0;
         }
 .game > .field > .card-slot{
     display: inline-block;
@@ -41,7 +44,7 @@
 }
 
 .game > .field.player-hand{
-    margin-top: 60px;
+    margin-top: 146px;
     border: 1px solid cyan;
     text-align: center;
 
@@ -53,7 +56,7 @@
 
     .choose-card{
     position: absolute;
-    top: 200px;
+    top: 330px;
     left:0;
     z-index:2;
     background-color:rgba(0, 0, 255, 0.459);
@@ -62,6 +65,7 @@
     height: 150px;
     border: solid 2px black;
     text-align: center;
+    border-radius: 10px;
 }
 .battlefield{
     position: relative;
@@ -178,6 +182,9 @@
 .hidden{
     visibility: hidden;
 }
+.unhidden{
+    visibility: unset;
+}
 .animation{
     margin-top: -20px;
     transition: all 0.5s;
@@ -219,4 +226,26 @@
     height: 100%;
     background-color: rgba(255, 255, 0, 0.527);
     z-index: 1
+}
+.lost-screen{
+    display: inline-block;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    font-size: 160px;
+    color: white;
+    padding-top: 20vh;
+    z-index: 5;
+}
+button{
+    display: inline-block;
+    font-size: 100px;
+    width: 400px;
+    border-radius: 9px;
+    background-color: white;
+    z-index: 5;
 }
