@@ -62,7 +62,7 @@ class Card{
         }else{
             let tokenNr = this.cardLevel - 11
             let selectedToken = cards.tokens[tokenNr]
-            console.log(selectedToken)
+
 
 
             let HTML = `<div style="background: ${selectedToken.picture}; background-size: cover" class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
