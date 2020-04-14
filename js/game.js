@@ -10,9 +10,9 @@ const lostScreen =  document.querySelector(".lost-screen")
 // ******Changable HTML elements*******
 const mana = GAME.querySelector(".mana")
 // ******Buttons*******
-const toggleShop = GAME.querySelector(".end-select")
-const battle = GAME.querySelector(".start-battle")
-const generateCard = GAME.querySelector(".generate-card")
+// const toggleShop = GAME.querySelector(".end-select")
+const battle = document.querySelector(".start-battle")
+const generateCard = document.querySelector(".generate-card")
 
 
 
@@ -42,9 +42,9 @@ class Game{
         battle.addEventListener("click", ()=>{
             this.battle()
         })
-        toggleShop.addEventListener("click", ()=>{
-            this.endSelect()
-        })
+        // toggleShop.addEventListener("click", ()=>{
+        //     this.endSelect()
+        // })
     }
 
     levelCeck(){
@@ -98,7 +98,7 @@ class Game{
 
     createPlayerCard(){
         if(this.mana>0){
-            new Card(1,3, chooseField, true, GAME, this, 1)
+            new Card(1,3, playerHand, true, GAME, this, 1)
             this.mana--
             mana.innerHTML = `Gold: <span style="color: #DAA520; font-size: 30px;">${this.mana}</span>`
         }else{

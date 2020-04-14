@@ -1,0 +1,56 @@
+.card{
+    display: inline-block;
+    width: 135px;
+    height: 187px;
+    background: url(../img/Cards/alleycat.png);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    margin: 0 3px;
+}
+    
+    .card-description{
+        display: flex;
+        position: absolute;
+        top: 115px;
+        left: 16px;
+        width: 108px;
+        height: 55px;
+        justify-content: center;
+        align-items: center;
+        vertical-align: center;
+        font-size: 10px;
+        line-height: 10px;
+    }
+    .card > .card-footer{
+        display: inline-block;
+        height: 30px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        
+    }
+        .card > .card-footer > .stat-box{
+            display: inline-block;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .card-footer > .stat-box.attack{
+            display: inline-block;
+            position: absolute;
+            left: 15px;
+            bottom: 4px;
+        }
+        .card-footer > .stat-box.defence{
+            display: inline-block;
+            position: absolute;
+            right: 8px;
+            bottom: 4px;
+        }
+
+.animation{
+    margin-top: -20px;
+    transition: all 0.5s;
+}

@@ -22,7 +22,8 @@ class Card{
     generateCard(){
         if(this.cardLevel === 1){
             
-            let radomCard = Math.floor(Math.random()*4)
+            let radomCard = 0
+            // Math.floor(Math.random()*4)
             let selectedCard = cards.level1[radomCard]
             this.attack = selectedCard.attack
             this.defence = selectedCard.defence
@@ -33,7 +34,6 @@ class Card{
         
             let HTML = `<div class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
-            <div class="card-name">${selectedCard.name}</div>
             <div class="card-footer">
                 <div class="stat-box attack">${selectedCard.attack}</div>
                 <div class="stat-box defence">${selectedCard.defence}</div>

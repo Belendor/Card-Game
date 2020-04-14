@@ -3,7 +3,7 @@ let cards = {
         {name: "Alleycat",
         attack: 1,
         defence: 1,
-        ability: "Summon 1/1",
+        ability: "Summon 1/1 Tabbycat",
         canSummon: true,
         hasShield: false,
         deathrattle: false,},

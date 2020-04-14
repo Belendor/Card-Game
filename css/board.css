@@ -1,15 +1,18 @@
 .main-screen{
     display: inline-block;
-    width: 100%;
-    height: 100vh;
+    width: 1300px;
+    height: 800px;
+    margin-left: calc(50% - 650px);
+    background: url(../img/Board-desert.jpg);
     background-size: cover;
-    background-position: center;
+    background-position-y: -85px;
+    border: 3px solid black;
+    position: relative;
+    overflow: hidden;
 }
     .main-screen > .game{
         display: inline-block;
         width: 900px;
-        height: 700px;
-        border: 2px solid red;
         margin-left: calc(50% - 450px);
         user-select: none;
         text-align: center;
@@ -25,35 +28,51 @@
             text-align: center;
             margin: 5px 0;
         }
+
         .main-screen > .game > .enemy-field{
+            position: absolute;
             display: inline-block;
             width: 100%;
-            height: 164px;
+            height: 190px;
             border: solid 7px rgb(177, 20, 20);
             text-align: center;
-            margin: 5px 0;
-            border-radius: 5px;
-            padding: 3px 0;
+            top: 120px;
+            left: 0;;
         }
-.game > .field > .card-slot{
+/* .game > .field > .card-slot{
     display: inline-block;
     width: 120px;
     margin: 0 2px;
     height: 100%;
     border: 1px solid blue;
-}
+} */
 
+
+.game > .field.player-field{
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 190px;
+    border: 1px solid rgb(255, 0, 13);
+    text-align: center;
+    overflow: hidden;
+    top: 310px;
+    left: 0;
+    overflow: visible;
+}
 .game > .field.player-hand{
-    margin-top: 146px;
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 160px;
     border: 1px solid cyan;
     text-align: center;
-
-}
-.game > .player-field{
-    display: inline-block;
-    position: relative;
+    overflow: hidden;
+    top: 610px;
+    left: 0;
 }
 
+/* 
     .choose-card{
     position: absolute;
     top: 330px;
@@ -66,8 +85,8 @@
     border: solid 2px black;
     text-align: center;
     border-radius: 10px;
-}
-.battlefield{
+} */
+/* .battlefield{
     position: relative;
 }
 .battlefield::after{
@@ -80,7 +99,7 @@
     height: 50px;
     color: rgba(0, 0, 0, 0.527);
     z-index: -2
-}
+} */
 
 .shop{}
 .shop::after{
@@ -111,73 +130,6 @@
 }
 
 
-/* Card CSS *************************/
-
-.card{
-    display: inline-block;
-    width: 120px;
-    height: 145px;
-    background-color: chocolate;
-    position: relative;
-    margin: 0 3px;
-}
-    .card > .card-footer{
-        display: inline-block;
-        position: absolute;
-        height: 50px;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background-color: darkmagenta;
-    }
-        .card > .card-footer > .stat-box{
-            display: inline-block;
-            float: left;
-            width: 50%;
-            height: 100%;
-            text-align: center;
-            font-size: 40px;
-            font-weight: bold;
-        }
-    .card-description{
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 65px;
-        background-color: brown;
-        text-align: center;
-    }
-    .card-name{
-        display: inline-block;
-        position: absolute;
-        top: 65px;
-        left: 0;
-        width: 100%;
-        height: 30px;
-        background-color: rgb(194, 169, 60);
-        text-align: center;
-        font-size: 14px;
-    }
-/* ************************************** */
-.btn{
-    margin-top: 3px;
-    display: inline-block;
-    width: 160px;
-    height: 50px;
-    background-color: darksalmon;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    line-height: 20px;
-    font-size: 20px;
-    padding: 15px 0;
-}
-.btn:active{
-    background-color: rgb(248, 91, 38);
-}
-
 
 .hidden{
     visibility: hidden;
@@ -190,6 +142,7 @@
     transition: all 0.5s;
 }
 .mana{
+    position: absolute;
     display: inline-block;
     width: 160px;
     height: 50px;
@@ -239,13 +192,5 @@
     font-size: 160px;
     color: white;
     padding-top: 20vh;
-    z-index: 5;
-}
-button{
-    display: inline-block;
-    font-size: 100px;
-    width: 400px;
-    border-radius: 9px;
-    background-color: white;
     z-index: 5;
 }
