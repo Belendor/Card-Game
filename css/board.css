@@ -24,7 +24,6 @@
             display: inline-block;
             width: 100%;
             height: 150px;
-            border: solid 2px black;
             text-align: center;
             margin: 5px 0;
         }
@@ -34,7 +33,7 @@
             display: inline-block;
             width: 100%;
             height: 190px;
-            border: solid 7px rgb(177, 20, 20);
+            /* border: solid 7px rgb(177, 20, 20); */
             text-align: center;
             top: 120px;
             left: 0;;
@@ -53,7 +52,7 @@
     display: inline-block;
     width: 100%;
     height: 190px;
-    border: 1px solid rgb(255, 0, 13);
+    /* border: 1px solid rgb(255, 0, 13); */
     text-align: center;
     overflow: hidden;
     top: 310px;
@@ -144,12 +143,15 @@
 .mana{
     position: absolute;
     display: inline-block;
+    bottom: 185px;
+    right: 390px;
     width: 160px;
     height: 50px;
     line-height: 20px;
     font-size: 20px;
     padding: 15px 0;
     text-align: center;
+    border: 3px solid red;
 }
 
 .deathrattle{
@@ -160,25 +162,51 @@
     content: "";
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(37, 37, 32, 0.527);
+    left: -3px;
+    width: 135px;
+    height: 187px;
+    border-radius: 30px;
+    border: 5px solid rgba(59, 59, 57, 0.198);
+    background-color: rgba(31, 31, 28, 0.281);
+    z-index: 1;
+    overflow: visible;
 }
 
 .shield{
     display: inline-block;
-    background-color: yellow;
+    width: 135px;
+    height: 187px;
+    overflow: hidden;
+    position: relative;
+    overflow: visible;
 }
+
+
 .shield::after{
     content: "";
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    left: -3px;
+    width: 135px;
+    height: 187px;
+    border-radius: 30px;
+    border: 5px solid rgba(206, 206, 15, 0.198);
     background-color: rgba(255, 255, 0, 0.527);
-    z-index: 1
+    z-index: 1;
+    overflow: visible;
+}
+.shield::before{
+    content: "";
+    position: absolute;
+    top: 50px;
+    left: 35px;
+    width: 60px;
+    height: 87px;
+    border-radius: 30px;
+    border: 5px solid rgba(228, 228, 8, 0.137);
+    background-color: rgba(255, 255, 0, 0.192);
+    z-index: 1;
+    overflow: visible;
 }
 .lost-screen{
     display: inline-block;

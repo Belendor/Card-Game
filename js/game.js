@@ -8,7 +8,7 @@ const chooseField = GAME.querySelector(".choose-card")
 const lostScreen =  document.querySelector(".lost-screen")
 
 // ******Changable HTML elements*******
-const mana = GAME.querySelector(".mana")
+const mana = document.querySelector(".mana")
 // ******Buttons*******
 // const toggleShop = GAME.querySelector(".end-select")
 const battle = document.querySelector(".start-battle")
@@ -111,25 +111,25 @@ class Game{
 
     createEnemyCard(number){
         if(number == 1){
-            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
         }
         if(number == 2){
-            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
         }
         if(number == 3){
-            this.enemyCardObjects.push(new Card(3,3,enemyField, false, GAME, this, 2))
-            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
+            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
         }
         if(number == 4){
-            this.enemyCardObjects.push(new Card(9,9,enemyField, false, GAME, this, 2))
-            this.enemyCardObjects.push(new Card(7,7,enemyField, false, GAME, this, 2))
-            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
+            this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
+            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
         }
         if(number == 5){
-            this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 11))
         }
         if(number == 6){
-            this.enemyCardObjects.push(new Card(12,12,enemyField, false, GAME, this, 2))
+            this.enemyCardObjects.push(new Card(12,12,enemyField, false, GAME, this, 11))
         }
         
     }
@@ -174,8 +174,14 @@ class Game{
        
        
         
+        console.log(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText, playerBattlefield[this.cardIndexToAttack][1])
+        console.log(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText == playerBattlefield[this.cardIndexToAttack][1])
+        if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText != playerBattlefield[this.cardIndexToAttack][1]){
+            this.playerCards[this.cardIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
+        }
         this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
         this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
+        this.enemyCards[randomEnemy].querySelector(".defence.stat-box").classList.add("red-text")
     
          //    ********Deathrattle*************
        

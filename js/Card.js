@@ -22,8 +22,7 @@ class Card{
     generateCard(){
         if(this.cardLevel === 1){
             
-            let radomCard = 0
-            // Math.floor(Math.random()*4)
+            let radomCard = Math.floor(Math.random()*4)
             let selectedCard = cards.level1[radomCard]
             this.attack = selectedCard.attack
             this.defence = selectedCard.defence
@@ -32,7 +31,7 @@ class Card{
             this.deathrattle = selectedCard.deathrattle
    
         
-            let HTML = `<div class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class="card player" style="background: ${selectedCard.picture}; background-size: cover" class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack">${selectedCard.attack}</div>
@@ -61,8 +60,12 @@ class Card{
             
             this.game.playerCardObjects.push(this)
         }else{
+            let tokenNr = this.cardLevel - 11
+            let selectedToken = cards.tokens[tokenNr]
+            console.log(selectedToken)
 
-            let HTML = `<div class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+
+            let HTML = `<div style="background: ${selectedToken.picture}; background-size: cover" class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-footer">
                 <div class="stat-box attack">${this.attack}</div>
                 <div class="stat-box defence">${this.defence}</div>
@@ -136,7 +139,7 @@ class Card{
     }
     sumonCat(){
         if(this.canSummon)
-        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,2))
+        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,11))
     }
 }
 
