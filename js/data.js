@@ -52,7 +52,7 @@ let cards = {
         {name: "dust-devil",
         attack: 2,
         defence: 2,
-        picture: 'url(../img/Tokens/dust-devil.png)',
+        picture: 'url(https://i.imgur.com/9J9WXlB.png)',
         ability: ""},
 
         {name: "windswept-elemntal",
