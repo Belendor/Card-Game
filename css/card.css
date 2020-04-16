@@ -96,7 +96,6 @@
 
 .deathrattle{
     display: inline-block;
-    background-color: yellow;
 }
 .deathrattle::after{
     content: "";
@@ -108,6 +107,19 @@
     border-radius: 30px;
     border: 5px solid rgba(59, 59, 57, 0.198);
     background-color: rgba(31, 31, 28, 0.281);
+    z-index: 1;
+    overflow: visible;
+}
+.deathrattle::before{
+    content: "";
+    position: absolute;
+    top: 50px;
+    left: 35px;
+    width: 60px;
+    height: 87px;
+    border-radius: 30px;
+    border: 5px solid rgba(29, 29, 14, 0.137);
+    background-color: rgba(31, 31, 27, 0.192);
     z-index: 1;
     overflow: visible;
 }

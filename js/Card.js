@@ -16,9 +16,8 @@ class Card{
         this.deathrattle = false
         this.battleCryReduced = false
         this.generateCard()
-        this.addEvents()
+        this.clickEvent()
     }
-
     generateCard(){
         if(this.cardLevel === 1){
             
@@ -31,7 +30,7 @@ class Card{
             this.deathrattle = selectedCard.deathrattle
    
         
-            let HTML = `<div class="card player" style="background: ${selectedCard.picture}; background-size: cover; background-image: ${selectedCard.pictureAlt}" class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class="card player" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack">${selectedCard.attack}</div>
@@ -65,7 +64,7 @@ class Card{
 
 
 
-            let HTML = `<div style="background: ${selectedToken.picture}; background-size: cover; background-image: ${selectedToken.pictureAlt}" class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div style="background-image: ${selectedToken.pictureAlt}; background-size: cover;" class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-footer">
                 <div class="stat-box attack">${this.attack}</div>
                 <div class="stat-box defence">${this.defence}</div>
@@ -81,85 +80,71 @@ class Card{
             this.game.cardIndex++
         } 
     }
+    clickEvent(){
+        this.HTML.addEventListener("mousedown", ()=> { this.addEvents()} )
+    }
 
     addEvents(){
-        let cards = this.game.playerCardObjects
-        let fields = this.DOM.querySelectorAll(".field")
-        let dropActivated = true
-        let dragedCard = ''
-        for (let i = 0;i<cards.length;i++){
- 
-            let card = cards[i].HTML
-            card.addEventListener("dragstart", ()=>{
-                dragedCard = card
-                setTimeout(function(){
-                    card.classList.add("hidden")
-                },0)
-            })
-            
-            card.addEventListener("dragend", ()=>{
-                setTimeout(()=>{
-                    card.classList.remove("hidden")
-                   console.log("drag ended")
-                    dragedCard = ''
-                },0)
-            })
-            if(dropActivated){
-                for(let j = 0;j<fields.length; j++){
-                    let field = fields[j]
-                    field.addEventListener("dragover",function(e){
-                        e.preventDefault()
-                    })
-                    field.addEventListener("dragenter", function(){
+        console.log("events added", this.HTML, this.game.mana);
+        
+        let playerHand = document.querySelector('.field.player-hand')
+        let playerField = document.querySelector('.player-field')
+        let dragedCard = ""
+        this.HTML.addEventListener("dragstart", ()=>{
+            setTimeout(()=>{
+                console.log(this.HTML);
+                dragedCard = this.HTML
+                this.HTML.classList.add("hidden")
+            },0)
+        })
+        this.HTML.addEventListener("dragend", ()=>{
+            setTimeout(()=>{
+                this.HTML.classList.remove("hidden")
+                dragedCard = ""
+            },0)
+        })
 
-                    })
-                    field.addEventListener("dragleave", function(){
-
-                    })
-                    field.addEventListener("drop",()=>{
-                        try{
-                            if(dragedCard.classList.contains("summonCat")){
-                                if(field.classList.contains("player-field")){
-                                    
-                                    this.sumonCat()
-                                    
-                                    dragedCard.classList.remove("summonCat")
-                                }
-                            }
-                        } catch(err){
-                        }    
-
-                        if(field.classList.contains("player-field")){
-                            field.append(dragedCard)
-                        }
-                        
-                    
-                        if(field.classList.contains("player-hand")){
-                            if(this.game.mana > 0){
-
-                                    setTimeout(()=>{
-                                    field.append(dragedCard)
-                                    this.game.mana--},0)
-                            }else{
-                                console.log("not enough mana")
-                            }
-                        }
-
-                        setTimeout(()=>{
-                            if(this.game.mana <= 0){
-                                console.log("uzdarom langa manos:",this.game.mana );
-                                
-                            document.querySelector(".choose-card").classList.add("hidden")
-                        }},100)
-                        
-                    })
-                }
-
-                dropActivated = false
+        playerHand.addEventListener("dragover",function(e){
+            e.preventDefault()
+        })
+        playerHand.addEventListener("dragenter", function(){
+        })
+        playerHand.addEventListener("dragleave", function(){
+        })
+        playerHand.addEventListener("drop",(e)=>{
+            if(this.game.mana > 0){
+                console.log(this.HTML);
+                
+                playerHand.append(dragedCard)
+                this.game.mana--
+            }else{
+                console.log("not enough mana")
             }
-            
 
-        }
+            if(this.game.mana <= 0){
+                document.querySelector(".choose-card").classList.add("hidden")
+            }
+            playerHand.append(dragedCard)
+        })
+
+        playerField.addEventListener("dragover",function(e){
+            e.preventDefault()
+        })
+        playerField.addEventListener("dragenter", function(){
+        })
+        playerField.addEventListener("dragleave", function(){
+        })
+        playerField.addEventListener("drop",(e)=>{
+  
+            if(this.HTML.classList.contains("summonCat")){
+                dragedCard.classList.remove("summonCat")
+                    
+                this.sumonCat()
+                return playerField.append(dragedCard)
+            }
+             
+            playerField.append(dragedCard)
+        })
     }
     sumonCat(){
         if(this.canSummon)
