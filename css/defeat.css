@@ -1,0 +1,35 @@
+.lost-screen{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    text-align: center;
+    font-size: 160px;
+    color: white;
+    z-index: 5;
+    position: relative;
+    margin-top: -20px;
+    filter: blur(0.6)
+}
+.defeat{
+    position: absolute;
+    background-image: url(../img/defeat.png);
+    background-repeat: no-repeat;
+    background-size: 560px 600px;
+    width: 600px;
+    height: 650px;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+}
+
+.defeat-text{
+    position: absolute;
+    font-size: 30px;
+    color: black;
+    width: 150px;
+    height: 140px;
+    top: 150px;
+    left: 200px;
+}

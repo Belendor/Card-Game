@@ -5,8 +5,14 @@ const enemyField = GAME.querySelector('.enemy-field')
 const playerField = GAME.querySelector('.player-field')
 const playerHand =  GAME.querySelector('.field.player-hand')
 const chooseField = GAME.querySelector(".choose-card")
-const lostScreen =  document.querySelector(".lost-screen")
 
+let lostScreen = document.querySelector(".lost-screen")
+
+// ******Coose card slots*******
+const slot1 = document.querySelector(".slot.first")
+const slot2 = document.querySelector(".slot.second")
+const slot3 = document.querySelector(".slot.third")
+const slot4 = document.querySelector(".slot.fourth")
 // ******Changable HTML elements*******
 const mana = document.querySelector(".mana")
 // ******Buttons*******
@@ -31,82 +37,102 @@ class Game{
         this.levelCeck()
         this.eventListeners()
         this.console()
+        this.createPlayerCard()
     }
     console(){
     }
     eventListeners(){
-        generateCard.addEventListener("click",()=>{
-            this.createPlayerCard()
-        })
+        // generateCard.addEventListener("click",()=>{
+        //     this.createPlayerCard()
+        // })
         
         battle.addEventListener("click", ()=>{
             this.battle()
         })
-        // toggleShop.addEventListener("click", ()=>{
-        //     this.endSelect()
-        // })
+        lostScreen.addEventListener("click", ()=>{
+            location.reload()
+        })
     }
 
     levelCeck(){
+        if(document.querySelector(".choose-card").classList.contains("hidden")){
+            document.querySelector(".choose-card").classList.remove("hidden")
+        }
+
         if(this.level === 1){
             this.createEnemyCard(1)
             this.setMana(1)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
         if(this.level === 2){
             this.mana = 2
             this.createEnemyCard(2)
             this.setMana(2)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
         if(this.level === 3){
             this.mana = 3
             this.createEnemyCard(3)
             this.setMana(3)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
         if(this.level === 4){
             this.mana = 4
             this.createEnemyCard(4)
             this.setMana(4)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
         if(this.level === 5){
             this.mana = 5
             this.createEnemyCard(5)
             this.setMana(5)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
         if(this.level === 6){
             this.mana = 6
             this.createEnemyCard(6)
             this.setMana(6)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
         if(this.level === 7){
             this.mana = 7
             this.createEnemyCard(7)
             this.setMana(7)
+            this.createPlayerCard()
             this.cardIndexToAttack = 0
         }
     }
 
     setMana(num){
-        mana.innerHTML =   `Gold: <span style="color: #DAA520; font-size: 30px;">${num}</span>`
+        // mana.innerHTML =   `Gold: <span style="color: #DAA520; font-size: 30px;">${num}</span>`
         this.mana = num;
     }
 
     createPlayerCard(){
-        if(this.mana>0){
-            new Card(1,3, playerHand, true, GAME, this, 1)
-            this.mana--
-            mana.innerHTML = `Gold: <span style="color: #DAA520; font-size: 30px;">${this.mana}</span>`
-        }else{
-            generateCard.innerHTML = `Not enough GOLD!`
-            setTimeout(function(){
-                generateCard.innerText = "Generate card"
-            },1000)
-        }
+        slot1.innerHTML = ""
+        slot2.innerHTML = ""
+        slot3.innerHTML = ""
+        slot4.innerHTML = ""
+        new Card(1,3, slot1, true, GAME, this, 1)
+        new Card(1,3, slot2, true, GAME, this, 1)
+        new Card(1,3, slot3, true, GAME, this, 1)
+        new Card(1,3, slot4, true, GAME, this, 1)
+        // if(this.mana>0){
+        //     new Card(1,3, playerHand, true, GAME, this, 1)
+        //     this.mana--
+        //     mana.innerHTML = `Gold: <span style="color: #DAA520; font-size: 30px;">${this.mana}</span>`
+        // }else{
+        //     generateCard.innerHTML = `Not enough GOLD!`
+        //     setTimeout(function(){
+        //         generateCard.innerText = "Generate card"
+        //     },1000)
+        // }
     }
 
     createEnemyCard(number){
@@ -182,7 +208,8 @@ class Game{
         this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
         this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
         this.enemyCards[randomEnemy].querySelector(".defence.stat-box").classList.add("red-text")
-    
+        this.enemyCards[randomEnemy].classList.add("hit-animation")
+        
          //    ********Deathrattle*************
        
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <=0 &&
@@ -199,6 +226,9 @@ class Game{
         }
 
        setTimeout(()=>{
+        if(this.enemyCards[randomEnemy].classList.contains("hit-animation")){
+            this.enemyCards[randomEnemy].classList.remove("hit-animation")
+        }
         
         this.playerCards[this.cardIndexToAttack].classList.remove("animation")
        
@@ -232,28 +262,19 @@ class Game{
         }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
             this.battle()
         )
-            
-        // let cardsLefinHand = playerHand.querySelectorAll(".card")
-        // let cardsLefinShop = chooseField.querySelectorAll(".card")
-        // console.log(cardsLefinHand, cardsLefinShop, this.mana);
-        // if(this.mana == 0 && 
-        //     cardsLefinHand.length <= 0&&
-        //     cardsLefinShop.length <= 0){
-        //         console.log("Defeat");
-                
-        //         lostScreen.classList.remove("hidden")
-        //     }  
-        },1200)
+        this.checkLost()    
+      
+        },1500)
 
         }
-    endSelect(){ 
-        chooseField.classList.toggle("hidden")
-        if(chooseField.classList.contains("hidden")){
-            toggleShop.innerHTML = `Show <span style="font-weight: bold;">Shop</span>`
-        }else{
-            toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
-        }
-    }
+    // endSelect(){ 
+    //     chooseField.classList.toggle("hidden")
+    //     if(chooseField.classList.contains("hidden")){
+    //         toggleShop.innerHTML = `Show <span style="font-weight: bold;">Shop</span>`
+    //     }else{
+    //         toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
+    //     }
+    // }
     addShield(ilgis, indexas){
         let randomindex = Math.floor(Math.random()*ilgis)
         if(randomindex != indexas){
@@ -262,7 +283,19 @@ class Game{
             this.addShield(ilgis, indexas) 
         }
     }
-    
+    checkLost(){
+        let cardsLefinHand = playerHand.querySelectorAll(".card")
+        let cardsLefinBattlefield = playerField.querySelectorAll(".card")
+            console.log(cardsLefinHand, cardsLefinBattlefield, this.mana);
+            if(this.mana == 0 && 
+                cardsLefinHand.length <= 0&&
+                cardsLefinBattlefield.length <= 0){
+                    let textField = lostScreen.querySelector(".defeat-text")
+                    lostScreen.classList.remove("hidden")
+                    textField.innerText = `Level reached: ${this.level}`
+                    console.log("Defeat");
+                } 
+    }
 }
 
 let newGame = new Game(1)

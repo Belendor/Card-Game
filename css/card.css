@@ -19,8 +19,9 @@
         justify-content: center;
         align-items: center;
         vertical-align: center;
-        font-size: 10px;
-        line-height: 10px;
+        font-size: 14px;
+        line-height: 15px;
+        font-weight: 800;
     }
     .card > .card-footer{
         display: inline-block;
@@ -57,5 +58,93 @@
 .red-text{
     color: red !important;
     text-shadow: 1px 0 0 black, -1px 0 0 black, 0 1px 0 black, 0 -1px 0 black, 1px 1px black, -1px -1px 0 black, 1px -1px 0  black, -1px 1px 0 black;
+}
 
+.hit-animation{
+    animation-name: hit;
+    animation-duration: 0.5s;
+}
+@keyframes hit{
+    0%{
+        transform: translateX(0);
+        transform: translateY(0);
+    }
+    25%{
+       
+        transform: translateY(-10px);
+    }
+    26%{
+        transform: translateX(-25px);
+    }
+    50%{
+        transform: translateX(0);
+        transform: translateY(0);
+    }
+    75%{
+        
+        transform: translateY(10px);
+    }
+    76%{
+        transform: translateX(25px);
+    }
+    100%{
+        transform: translateX(0);
+        transform: translateY(0);
+    }
+}
+
+
+.deathrattle{
+    display: inline-block;
+    background-color: yellow;
+}
+.deathrattle::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 135px;
+    height: 187px;
+    border-radius: 30px;
+    border: 5px solid rgba(59, 59, 57, 0.198);
+    background-color: rgba(31, 31, 28, 0.281);
+    z-index: 1;
+    overflow: visible;
+}
+
+.shield{
+    display: inline-block;
+    width: 135px;
+    height: 187px;
+    overflow: hidden;
+    position: relative;
+    overflow: visible;
+}
+
+
+.shield::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 135px;
+    height: 187px;
+    border-radius: 30px;
+    border: 5px solid rgba(206, 206, 15, 0.198);
+    background-color: rgba(255, 255, 0, 0.527);
+    z-index: 1;
+    overflow: visible;
+}
+.shield::before{
+    content: "";
+    position: absolute;
+    top: 50px;
+    left: 35px;
+    width: 60px;
+    height: 87px;
+    border-radius: 30px;
+    border: 5px solid rgba(228, 228, 8, 0.137);
+    background-color: rgba(255, 255, 0, 0.192);
+    z-index: 1;
+    overflow: visible;
 }
