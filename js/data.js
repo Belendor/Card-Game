@@ -9,7 +9,7 @@ let cards = {
         canSummon: true,
         hasShield: false,
         deathrattle: false,},
-        
+
         {name: "Dragonspawn",
         attack: 2,
         defence: 3,
@@ -20,7 +20,6 @@ let cards = {
         hasShield: false,
         deathrattle: false,
         },
-
         {
         name: "Righteous Protector",
         attack: 1,
