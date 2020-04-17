@@ -9,6 +9,8 @@ const chooseField = GAME.querySelector(".choose-card")
 const lostScreen = document.querySelector(".lost-screen")
 
 const chooseCardScreen = document.querySelector(".choose-card")
+const cardSelectText = document.querySelector(".choose-one")
+const turnCounter = document.querySelector(".turn-counter")
 // ******Coose card slots*******
 const slot1 = document.querySelector(".slot.first")
 const slot2 = document.querySelector(".slot.second")
@@ -24,8 +26,10 @@ const generateCard = document.querySelector(".generate-card")
 
 
 class Game{
-    constructor(level){
+    constructor(level,playerCount){
         this.level = level
+        this.playerCount = playerCount
+        this.playerTurn = true
         this.mana = null
         this.playerCards = null
         this.enemyCards = null
@@ -37,7 +41,6 @@ class Game{
         this.cardIndexToAttack = 0
         this.levelCeck()
         this.eventListeners()
-        this.createPlayerCard()
     }
     cardsLeftToChoose(){
         setTimeout(()=>{
@@ -63,13 +66,21 @@ class Game{
             }
         },10)
     }
+
     eventListeners(){
+        console.log("button events added");
+        
         // generateCard.addEventListener("click",()=>{
         //     this.createPlayerCard()
         // })
         
         battle.addEventListener("click", ()=>{
-            this.battle()
+            if(this.playerTurn){
+                this.playerTurn = false
+                this.levelCeck()
+            }else{
+                this.battle()
+            }
         })
         lostScreen.addEventListener("click", ()=>{
             location.reload()
@@ -77,16 +88,38 @@ class Game{
     }
 
     levelCeck(){
+        console.log("First Level check");
+        
         if(document.querySelector(".choose-card").classList.contains("hidden")){
             document.querySelector(".choose-card").classList.remove("hidden")
         }
-
-        if(this.level > 0 && this.level < 8){
+        if(this.playerCount === 1){
             this.createEnemyCard(this.level)
             this.setMana(this.level)
             this.createPlayerCard()
             this.cardIndexToAttack = 0
-          }
+            battle.innerText = "Battle"
+        }
+        console.log("player Count:", this.playerCount)
+        if(this.playerCount === 2){
+            if(this.playerTurn){
+                battle.innerText = "End Turn"
+                cardSelectText.innerText = "First Player Select yor Card"
+                turnCounter.innerText = `Turn: ${this.level}`
+                console.log("setting player one cards")
+                this.setMana(this.level)
+                this.createPlayerCard(true)
+                this.cardIndexToAttack = 0
+            }else{
+                console.log("seting cards for second player")
+                cardSelectText.innerText = "Second Player Select yor Card"
+                turnCounter.innerText = `Turn: ${this.level}`
+                this.setMana(this.level)
+                this.createPlayerCard(false)
+                this.cardIndexToAttack = 0
+                battle.innerText = "Battle"
+            }
+        }
     }
 
     setMana(num){
@@ -94,15 +127,34 @@ class Game{
         this.mana = num;
     }
 
-    createPlayerCard(){
-        slot1.innerHTML = ""
-        slot2.innerHTML = ""
-        slot3.innerHTML = ""
-        slot4.innerHTML = ""
-        new Card(1,3, slot1, true, GAME, this, 1)
-        new Card(1,3, slot2, true, GAME, this, 1)
-        new Card(1,3, slot3, true, GAME, this, 1)
-        new Card(1,3, slot4, true, GAME, this, 1)
+    createPlayerCard(playerTurn){
+        console.log("setting cards for first player", playerTurn);
+        console.log(this, playerTurn);
+       
+        if(playerTurn){
+            slot1.innerHTML = ""
+            slot2.innerHTML = ""
+            slot3.innerHTML = ""
+            slot4.innerHTML = ""
+            console.log("Generating card1");
+            new Card(1,3, slot1, true, GAME, this, 1, true)
+            console.log("Generating card2");
+            new Card(1,3, slot2, true, GAME, this, 1, true)
+            console.log("Generating card3");
+            new Card(1,3, slot3, true, GAME, this, 1, true)
+            console.log("Generating card4");
+            new Card(1,3, slot4, true, GAME, this, 1, true)
+        }else{
+            slot1.innerHTML = ""
+            slot2.innerHTML = ""
+            slot3.innerHTML = ""
+            slot4.innerHTML = ""
+            new Card(1,3, slot1, true, GAME, this, 1, false)
+            new Card(1,3, slot2, true, GAME, this, 1, false)
+            new Card(1,3, slot3, true, GAME, this, 1, false)
+            new Card(1,3, slot4, true, GAME, this, 1, false)
+        }
+
         // if(this.mana>0){
         //     new Card(1,3, playerHand, true, GAME, this, 1)
         //     this.mana--
@@ -139,13 +191,12 @@ class Game{
         }
         
     }
+
     battle(){
         let playerBattlefield = []
         let enemyBattlefield = []
         this.playerCards = playerField.querySelectorAll(".card")
         this.enemyCards = enemyField.querySelectorAll(".card")
-        let playerCards = this.playerCards
-        let enemyCards = this.enemyCards
 
         // Player Field to array****************
        for(let i =0;i<this.playerCards.length;i++){
@@ -159,6 +210,10 @@ class Game{
         // Enemy Field to array****************   
        for(let i=0;i<this.enemyCards.length;i++){
         enemyBattlefield.push([this.enemyCards[i].querySelector(".attack").innerText, this.enemyCards[i].querySelector(".defence").innerText])
+
+            if(this.enemyCards[i].classList.contains("shield")){
+                enemyBattlefield[i].push(1)
+            }
        }
         // ************************************
 
@@ -166,42 +221,59 @@ class Game{
 
         // Jei yra Shield**********************
         if(playerBattlefield[this.cardIndexToAttack] != undefined){
-        if(playerBattlefield[this.cardIndexToAttack][2] === 1){
-            
-            playerBattlefield[this.cardIndexToAttack][1] = parseInt(playerBattlefield[this.cardIndexToAttack][1],10) + parseInt(enemyBattlefield[randomEnemy][0],10)
-            
-            this.playerCards[this.cardIndexToAttack].classList.remove("shield")
-            playerBattlefield[this.cardIndexToAttack][2] = 0
-        }}
+            if(playerBattlefield[this.cardIndexToAttack][2] === 1){
+                
+                playerBattlefield[this.cardIndexToAttack][1] = parseInt(playerBattlefield[this.cardIndexToAttack][1],10) + parseInt(enemyBattlefield[randomEnemy][0],10)
+                
+                this.playerCards[this.cardIndexToAttack].classList.remove("shield")
+                playerBattlefield[this.cardIndexToAttack][2] = 0
+            }
+        }
         // ************************************
         playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomEnemy][0]
         enemyBattlefield[randomEnemy][1] = enemyBattlefield[randomEnemy][1] - playerBattlefield[this.cardIndexToAttack][0]
         this.playerCards[this.cardIndexToAttack].classList.add("animation")
        
-       
-        
+  
         console.log(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText, playerBattlefield[this.cardIndexToAttack][1])
         console.log(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText == playerBattlefield[this.cardIndexToAttack][1])
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText != playerBattlefield[this.cardIndexToAttack][1]){
             this.playerCards[this.cardIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
         }
         this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
+        
+        
+        if(this.enemyCards[randomEnemy].querySelector(".defence").innerText != enemyBattlefield[randomEnemy][1]){
+            this.enemyCards[randomEnemy].querySelector(".defence.stat-box").classList.add("red-text")
+        }
         this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
-        this.enemyCards[randomEnemy].querySelector(".defence.stat-box").classList.add("red-text")
+
+
         this.enemyCards[randomEnemy].classList.add("hit-animation")
         
          //    ********Deathrattle*************
-       
+        console.log("korta kuria tikrinam:", this.playerCards[this.cardIndexToAttack] ,"arr reikia deathrattle, mires?:", this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText, "turi drathrattle  klase:", this.playerCards[this.cardIndexToAttack].classList.contains("deathrattle"), "turi pridet shield klase:", this.playerCards[this.cardIndexToAttack].classList.contains("addShield"));
+        
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <=0 &&
         this.playerCards[this.cardIndexToAttack].classList.contains("deathrattle") && 
         this.playerCards[this.cardIndexToAttack].classList.contains("addShield")){
+              console.log("toliau tikrinam ar kortu ilgis yra didesnis uz 1", playerField.querySelectorAll(".card").length);
               
-            if(playerField.querySelectorAll(".card").length > 0){
-                if(this.cardIndexToAttack+1 < playerField.querySelectorAll(".card").length){
-                 
-                this.addShield(playerField.querySelectorAll(".card").length, this.cardIndexToAttack)
+            if(playerField.querySelectorAll(".card").length > 1){
+                console.log("paleidziamas funkcija uzmest random skyda");
 
-                }
+                this.addShield(playerField.querySelectorAll(".card").length, this.cardIndexToAttack, this.playerCards)
+            }
+        }
+        console.log("arr reikia det kazkam skyda?", this.enemyCards[randomEnemy].querySelector(".defence").innerText, this.enemyCards[randomEnemy].classList.contains("deathrattle"),this.enemyCards[randomEnemy].classList.contains("addShield"))
+        if(this.enemyCards[randomEnemy].querySelector(".defence").innerText <=0 &&
+        this.enemyCards[randomEnemy].classList.contains("deathrattle") && 
+        this.enemyCards[randomEnemy].classList.contains("addShield")){
+              
+            if(enemyField.querySelectorAll(".card").length > 1){
+                console.log("paleidziamas funkcija uzmest random skyda ant prieso");
+
+                this.addShield(enemyField.querySelectorAll(".card").length, randomEnemy, this.enemyCards)
             }
         }
 
@@ -235,10 +307,13 @@ class Game{
             this.enemyCards[randomEnemy].remove()
         }
 
-        this.checkLost()    
+        // this.checkLost()    
+        console.log(enemyField.querySelectorAll(".card").length, "enemy field left");
+        console.log(playerField.querySelectorAll(".card").length, "player field left");
         
-        if(enemyField.querySelectorAll(".card").length == 0){
+        if(enemyField.querySelectorAll(".card").length == 0 || playerField.querySelectorAll(".card").length == 0 ){
         this.level++
+        this.playerTurn = true
         this.levelCeck()
         }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
             this.battle()
@@ -255,15 +330,23 @@ class Game{
     //         toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
     //     }
     // }
-    addShield(ilgis, indexas){
+    addShield(ilgis, indexas, zaidejas){
+        console.log("dedamas skydas ant random");
+
         let randomindex = Math.floor(Math.random()*ilgis)
-        if(randomindex != indexas){
-            this.playerCards[randomindex].classList.add("shield")
-        }else{
-            this.addShield(ilgis, indexas) 
-        }
+        console.log("random index ant kurio det yra", randomindex);
+
+            if(randomindex != indexas){
+                console.log("korta su tokiu index gauna skyda", randomindex);
+                zaidejas[randomindex].classList.add("shield")
+            }else{
+                console.log(randomindex, "pasirinktas random skaicius yra lygus puolikui", indexas)
+                this.addShield(ilgis, indexas) 
+            }
+        
     }
     checkLost(){
+
         let cardsLefinHand = playerHand.querySelectorAll(".card")
         let cardsLefinBattlefield = playerField.querySelectorAll(".card")
         let cardsleftinenemyField = enemyField.querySelectorAll(".card")
@@ -281,5 +364,5 @@ class Game{
     }
 }
 
-let newGame = new Game(1)
+let newGame = new Game(1,2)
 

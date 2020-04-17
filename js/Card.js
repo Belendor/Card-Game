@@ -1,12 +1,13 @@
 import cards from "./data.js"
 
 class Card{
-    constructor(attack, defence, target, dragable, DOM, game, cardLevel){
+    constructor(attack, defence, target, dragable, DOM, game, cardLevel, playerTurn){
         this.attack = attack
         this.defence = defence
         this.target = target
         this.dragable = dragable
         this.cardLevel = cardLevel;
+        this.playerTurn = playerTurn
         this.game = game;
         this.DOM = DOM;
         this.index = 0;
@@ -15,8 +16,12 @@ class Card{
         this.hasShield = false
         this.deathrattle = false
         this.battleCryReduced = false
+        this.consoleLog()
         this.generateCard()
         this.clickEvent()
+    }
+    consoleLog(){
+        console.log("Card generator")
     }
     generateCard(){
         if(this.cardLevel === 1){
@@ -83,61 +88,119 @@ class Card{
     }
 
     addEvents(){
-   
-        let playerHand = document.querySelector('.field.player-hand')
-        let playerField = document.querySelector('.player-field')
-        let dragedCard = ""
-        this.HTML.addEventListener("dragstart", ()=>{
-            setTimeout(()=>{
-                dragedCard = this.HTML
-                this.HTML.classList.add("hidden")
-            },0)
-        })
-        this.HTML.addEventListener("dragend", ()=>{
-            setTimeout(()=>{
-                this.HTML.classList.remove("hidden")
-                dragedCard = ""
-            },0)
-        })
-
-        playerHand.addEventListener("dragover",function(e){
-            e.preventDefault()
-        })
-        playerHand.addEventListener("dragenter", function(){
-        })
-        playerHand.addEventListener("dragleave", function(){
-        })
-        playerHand.addEventListener("drop",(e)=>{
-            this.game.cardsLeftToChoose()
-            playerHand.append(dragedCard)
-        })
-
-
-        
-        playerField.addEventListener("dragover",function(e){
-            e.preventDefault()
-        })
-        playerField.addEventListener("dragenter", function(){
-        })
-        playerField.addEventListener("dragleave", function(){
-        })
-        playerField.addEventListener("drop",(e)=>{
-  
-            if(this.HTML.classList.contains("summonCat")){
-                dragedCard.classList.remove("summonCat")
-                    
-                this.sumonCat()
-                return playerField.append(dragedCard)
-            }
-             
-            playerField.append(dragedCard)
-        })
+        console.log("adding events", this.playerTurn)
+        if(this.playerTurn){
+            let playerHand = document.querySelector('.field.player-hand')
+            let playerField = document.querySelector('.player-field')
+            let dragedCard = ""
+            this.HTML.addEventListener("dragstart", ()=>{
+                setTimeout(()=>{
+                    dragedCard = this.HTML
+                    this.HTML.classList.add("hidden")
+                },0)
+            })
+            this.HTML.addEventListener("dragend", ()=>{
+                setTimeout(()=>{
+                    this.HTML.classList.remove("hidden")
+                    dragedCard = ""
+                },0)
+            })
+    
+            playerHand.addEventListener("dragover",function(e){
+                e.preventDefault()
+            })
+            playerHand.addEventListener("dragenter", function(){
+            })
+            playerHand.addEventListener("dragleave", function(){
+            })
+            playerHand.addEventListener("drop",(e)=>{
+                this.game.cardsLeftToChoose()
+                playerHand.append(dragedCard)
+            })
+    
+    
+            
+            playerField.addEventListener("dragover",function(e){
+                e.preventDefault()
+            })
+            playerField.addEventListener("dragenter", function(){
+            })
+            playerField.addEventListener("dragleave", function(){
+            })
+            playerField.addEventListener("drop",(e)=>{
+      
+                if(this.HTML.classList.contains("summonCat")){
+                    dragedCard.classList.remove("summonCat")
+                        
+                    this.sumonCat()
+                    return playerField.append(dragedCard)
+                }
+                 
+                playerField.append(dragedCard)
+            })
+        }else{
+            let playerHand = document.querySelector('.field.player-hand')
+            let playerField = document.querySelector('.enemy-field')
+            let dragedCard = ""
+            this.HTML.addEventListener("dragstart", ()=>{
+                setTimeout(()=>{
+                    dragedCard = this.HTML
+                    this.HTML.classList.add("hidden")
+                },0)
+            })
+            this.HTML.addEventListener("dragend", ()=>{
+                setTimeout(()=>{
+                    this.HTML.classList.remove("hidden")
+                    dragedCard = ""
+                },0)
+            })
+    
+            playerHand.addEventListener("dragover",function(e){
+                e.preventDefault()
+            })
+            playerHand.addEventListener("dragenter", function(){
+            })
+            playerHand.addEventListener("dragleave", function(){
+            })
+            playerHand.addEventListener("drop",(e)=>{
+                this.game.cardsLeftToChoose()
+                playerHand.append(dragedCard)
+            })
+    
+    
+            
+            playerField.addEventListener("dragover",function(e){
+                e.preventDefault()
+            })
+            playerField.addEventListener("dragenter", function(){
+            })
+            playerField.addEventListener("dragleave", function(){
+            })
+            playerField.addEventListener("drop",(e)=>{
+      
+                if(this.HTML.classList.contains("summonCat")){
+                    dragedCard.classList.remove("summonCat")
+                        
+                    this.sumonCat()
+                    return playerField.append(dragedCard)
+                }
+                 
+                playerField.append(dragedCard)
+            })
+        }
     }
     sumonCat(){
-        if(this.canSummon)
-        setTimeout(()=>{
-            this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,11))
-        }, 0)
+        if(this.canSummon){
+            if(this.game.playerTurn){
+                setTimeout(()=>{
+                    this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,11))
+                }, 0)
+            }else{
+                setTimeout(()=>{
+                    this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.DOM, this.game,11))
+                }, 0)
+            }
+        }
     }   
 }
 
