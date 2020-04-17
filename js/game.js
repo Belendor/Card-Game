@@ -235,6 +235,7 @@ class Game{
             this.enemyCards[randomEnemy].remove()
         }
 
+        this.checkLost()    
         
         if(enemyField.querySelectorAll(".card").length == 0){
         this.level++
@@ -242,7 +243,6 @@ class Game{
         }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
             this.battle()
         )
-        this.checkLost()    
       
         },1500)
 
@@ -266,18 +266,18 @@ class Game{
     checkLost(){
         let cardsLefinHand = playerHand.querySelectorAll(".card")
         let cardsLefinBattlefield = playerField.querySelectorAll(".card")
-
-            setTimeout(()=>{
-                console.log(cardsLefinHand, cardsLefinBattlefield, chooseCardScreen.classList.contains("hidden"), "ckecing lost");
-                if(chooseCardScreen.classList.contains("hidden") && 
-                    cardsLefinHand.length <= 0&&
-                    cardsLefinBattlefield.length <= 0){
-                        let textField = lostScreen.querySelector(".defeat-text")
-                        lostScreen.classList.remove("hidden")
-                        textField.innerText = `Level reached: ${this.level}`
-                        console.log("Defeat");
-                    } 
-            },20)
+        let cardsleftinenemyField = enemyField.querySelectorAll(".card")
+            
+            console.log(cardsLefinHand, cardsLefinBattlefield, cardsleftinenemyField.length, "ckecing lost");
+            if(cardsleftinenemyField.length >0 && 
+                cardsLefinHand.length <= 0&&
+                cardsLefinBattlefield.length <= 0){
+                    let textField = lostScreen.querySelector(".defeat-text")
+                    lostScreen.classList.remove("hidden")
+                    textField.innerText = `Level reached: ${this.level}`
+                    console.log("Defeat");
+                } 
+        
     }
 }
 
