@@ -62,8 +62,6 @@ class Card{
             let tokenNr = this.cardLevel - 11
             let selectedToken = cards.tokens[tokenNr]
 
-
-
             let HTML = `<div style="background-image: ${selectedToken.pictureAlt}; background-size: cover;" class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-footer">
                 <div class="stat-box attack">${this.attack}</div>
@@ -127,6 +125,8 @@ class Card{
             playerHand.append(dragedCard)
         })
 
+
+        
         playerField.addEventListener("dragover",function(e){
             e.preventDefault()
         })

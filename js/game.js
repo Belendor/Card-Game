@@ -36,10 +36,7 @@ class Game{
         this.cardIndexToAttack = 0
         this.levelCeck()
         this.eventListeners()
-        this.console()
         this.createPlayerCard()
-    }
-    console(){
     }
     eventListeners(){
         // generateCard.addEventListener("click",()=>{
@@ -59,54 +56,12 @@ class Game{
             document.querySelector(".choose-card").classList.remove("hidden")
         }
 
-        if(this.level === 1){
-            this.createEnemyCard(1)
-            this.setMana(1)
+        if(this.level > 0 && this.level < 8){
+            this.createEnemyCard(this.level)
+            this.setMana(this.level)
             this.createPlayerCard()
             this.cardIndexToAttack = 0
-        }
-        if(this.level === 2){
-            this.mana = 2
-            this.createEnemyCard(2)
-            this.setMana(2)
-            this.createPlayerCard()
-            this.cardIndexToAttack = 0
-        }
-        if(this.level === 3){
-            this.mana = 3
-            this.createEnemyCard(3)
-            this.setMana(3)
-            this.createPlayerCard()
-            this.cardIndexToAttack = 0
-        }
-        if(this.level === 4){
-            this.mana = 4
-            this.createEnemyCard(4)
-            this.setMana(4)
-            this.createPlayerCard()
-            this.cardIndexToAttack = 0
-        }
-        if(this.level === 5){
-            this.mana = 5
-            this.createEnemyCard(5)
-            this.setMana(5)
-            this.createPlayerCard()
-            this.cardIndexToAttack = 0
-        }
-        if(this.level === 6){
-            this.mana = 6
-            this.createEnemyCard(6)
-            this.setMana(6)
-            this.createPlayerCard()
-            this.cardIndexToAttack = 0
-        }
-        if(this.level === 7){
-            this.mana = 7
-            this.createEnemyCard(7)
-            this.setMana(7)
-            this.createPlayerCard()
-            this.cardIndexToAttack = 0
-        }
+          }
     }
 
     setMana(num){
