@@ -6,8 +6,9 @@ const playerField = GAME.querySelector('.player-field')
 const playerHand =  GAME.querySelector('.field.player-hand')
 const chooseField = GAME.querySelector(".choose-card")
 
-let lostScreen = document.querySelector(".lost-screen")
+const lostScreen = document.querySelector(".lost-screen")
 
+const chooseCardScreen = document.querySelector(".choose-card")
 // ******Coose card slots*******
 const slot1 = document.querySelector(".slot.first")
 const slot2 = document.querySelector(".slot.second")
@@ -37,6 +38,31 @@ class Game{
         this.levelCeck()
         this.eventListeners()
         this.createPlayerCard()
+    }
+    cardsLeftToChoose(){
+        setTimeout(()=>{
+            if(this.level === 1){
+                if(chooseCardScreen.querySelectorAll(".card").length == 3){
+                    chooseCardScreen.classList.add("hidden")
+                }
+            }
+            if(this.level === 2){
+                if(chooseCardScreen.querySelectorAll(".card").length == 2){
+                    chooseCardScreen.classList.add("hidden")
+                }
+            }
+            if(this.level === 3){
+                if(chooseCardScreen.querySelectorAll(".card").length == 1){
+                    chooseCardScreen.classList.add("hidden")
+                }
+            }
+            if(this.level === 4){
+                if(chooseCardScreen.querySelectorAll(".card").length == 0){
+                    chooseCardScreen.classList.add("hidden")
+                }
+            }
+            console.log(chooseCardScreen.querySelectorAll(".card"), " tiek kortu liko")
+        },10)
     }
     eventListeners(){
         // generateCard.addEventListener("click",()=>{

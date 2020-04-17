@@ -110,18 +110,7 @@ class Card{
         playerHand.addEventListener("dragleave", function(){
         })
         playerHand.addEventListener("drop",(e)=>{
-            if(this.game.mana > 0){
-                console.log(this.HTML);
-                
-                playerHand.append(dragedCard)
-                this.game.mana--
-            }else{
-                console.log("not enough mana")
-            }
-
-            if(this.game.mana <= 0){
-                document.querySelector(".choose-card").classList.add("hidden")
-            }
+            this.game.cardsLeftToChoose()
             playerHand.append(dragedCard)
         })
 
