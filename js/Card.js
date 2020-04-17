@@ -83,14 +83,12 @@ class Card{
     }
 
     addEvents(){
-        console.log("events added", this.HTML, this.game.mana);
-        
+   
         let playerHand = document.querySelector('.field.player-hand')
         let playerField = document.querySelector('.player-field')
         let dragedCard = ""
         this.HTML.addEventListener("dragstart", ()=>{
             setTimeout(()=>{
-                console.log(this.HTML);
                 dragedCard = this.HTML
                 this.HTML.classList.add("hidden")
             },0)

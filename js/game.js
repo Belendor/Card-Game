@@ -61,7 +61,6 @@ class Game{
                     chooseCardScreen.classList.add("hidden")
                 }
             }
-            console.log(chooseCardScreen.querySelectorAll(".card"), " tiek kortu liko")
         },10)
     }
     eventListeners(){
@@ -267,15 +266,18 @@ class Game{
     checkLost(){
         let cardsLefinHand = playerHand.querySelectorAll(".card")
         let cardsLefinBattlefield = playerField.querySelectorAll(".card")
-            console.log(cardsLefinHand, cardsLefinBattlefield, this.mana);
-            if(this.mana == 0 && 
-                cardsLefinHand.length <= 0&&
-                cardsLefinBattlefield.length <= 0){
-                    let textField = lostScreen.querySelector(".defeat-text")
-                    lostScreen.classList.remove("hidden")
-                    textField.innerText = `Level reached: ${this.level}`
-                    console.log("Defeat");
-                } 
+
+            setTimeout(()=>{
+                console.log(cardsLefinHand, cardsLefinBattlefield, chooseCardScreen.classList.contains("hidden"), "ckecing lost");
+                if(chooseCardScreen.classList.contains("hidden") && 
+                    cardsLefinHand.length <= 0&&
+                    cardsLefinBattlefield.length <= 0){
+                        let textField = lostScreen.querySelector(".defeat-text")
+                        lostScreen.classList.remove("hidden")
+                        textField.innerText = `Level reached: ${this.level}`
+                        console.log("Defeat");
+                    } 
+            },20)
     }
 }
 
