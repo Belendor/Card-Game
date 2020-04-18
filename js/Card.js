@@ -35,10 +35,10 @@ class Card{
             this.deathrattle = selectedCard.deathrattle
    
         
-            let HTML = `<div class="card player" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class="card " style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
-                <div class="stat-box attack">${selectedCard.attack}</div>
+                <div class="stat-box attack player">${selectedCard.attack}</div>
                 <div class="stat-box defence">${selectedCard.defence}</div>
             </div>
             </div>`

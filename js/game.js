@@ -42,6 +42,7 @@ class Game{
         this.levelCeck()
         this.eventListeners()
     }
+
     cardsLeftToChoose(){
         setTimeout(()=>{
             if(this.level === 1){
@@ -59,7 +60,7 @@ class Game{
                     chooseCardScreen.classList.add("hidden")
                 }
             }
-            if(this.level === 4){
+            if(this.level >= 4){
                 if(chooseCardScreen.querySelectorAll(".card").length == 0){
                     chooseCardScreen.classList.add("hidden")
                 }
@@ -101,18 +102,36 @@ class Game{
         if(this.playerCount === 2){
             if(this.playerTurn){
                 battle.innerText = "End Turn"
-                cardSelectText.innerText = "First Player Select yor Card"
                 turnCounter.innerText = `Turn: ${this.level}`
                 this.setMana(this.level)
                 this.createPlayerCard(true)
                 this.cardIndexToAttack = 0
+                if(this.level == 1){
+                    cardSelectText.innerText = "First Player Select yor Card"
+                }
+                if(this.level >1 && this.level <5){
+                    cardSelectText.innerText = `First Player Select ${this.level} Cards`
+                }
+                if(this.level > 4){
+                    cardSelectText.innerText = `First Player Select 4 Cards`
+                }
+
             }else{
-                cardSelectText.innerText = "Second Player Select yor Card"
                 turnCounter.innerText = `Turn: ${this.level}`
                 this.setMana(this.level)
                 this.createPlayerCard(false)
                 this.cardIndexToAttack = 0
                 battle.innerText = "Battle"
+
+                if(this.level == 1){
+                    cardSelectText.innerText = "Second Player Select yor Card"
+                }
+                if(this.level >1 && this.level <5){
+                    cardSelectText.innerText = `Second Player Select ${this.level} Cards`
+                }
+                if(this.level > 4){
+                    cardSelectText.innerText = `Second Player Select 4 Cards`
+                }
             }
         }
     }
@@ -122,9 +141,6 @@ class Game{
     }
 
     createPlayerCard(playerTurn){
-        console.log("setting cards for first player", playerTurn);
-        console.log(this, playerTurn);
-       
         if(playerTurn){
             slot1.innerHTML = ""
             slot2.innerHTML = ""
@@ -148,43 +164,32 @@ class Game{
             new Card(1,3, slot3, true, GAME, this, 1, false)
             new Card(1,3, slot4, true, GAME, this, 1, false)
         }
-
-        // if(this.mana>0){
-        //     new Card(1,3, playerHand, true, GAME, this, 1)
-        //     this.mana--
-        //     mana.innerHTML = `Gold: <span style="color: #DAA520; font-size: 30px;">${this.mana}</span>`
-        // }else{
-        //     generateCard.innerHTML = `Not enough GOLD!`
-        //     setTimeout(function(){
-        //         generateCard.innerText = "Generate card"
-        //     },1000)
-        // }
     }
 
-    createEnemyCard(number){
-        if(number == 1){
-            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
-        }
-        if(number == 2){
-            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
-        }
-        if(number == 3){
-            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
-            this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
-        }
-        if(number == 4){
-            this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
-            this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
-            this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
-        }
-        if(number == 5){
-            this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 11))
-        }
-        if(number == 6){
-            this.enemyCardObjects.push(new Card(12,12,enemyField, false, GAME, this, 11))
-        }
+    // createEnemyCard(number){
+    //     if(number == 1){
+    //         this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
+    //     }
+    //     if(number == 2){
+    //         this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
+    //     }
+    //     if(number == 3){
+    //         this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
+    //         this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
+    //     }
+    //     if(number == 4){
+    //         this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
+    //         this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
+    //         this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
+    //     }
+    //     if(number == 5){
+    //         this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 11))
+    //     }
+    //     if(number == 6){
+    //         this.enemyCardObjects.push(new Card(12,12,enemyField, false, GAME, this, 11))
+    //     }
         
-    }
+    // }
 
     battle(){
         let playerBattlefield = []
@@ -277,14 +282,14 @@ class Game{
         }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
             this.battle()
         )
-        },1500)
+        },1700)
     }
     checkWhoWon(playerField, enemyField){
-        console.log("checking who won");
         let friendlyAliveCards = []
         let enemyAliveCards = []
         let allFriendlyCards = playerField.querySelectorAll(".card")
         let allEnemyCards = enemyField.querySelectorAll(".card")
+
         for(let i = 0;i<allFriendlyCards.length;i++){
             if(allFriendlyCards[i].querySelector(".defence").innerText >0){
                 friendlyAliveCards.push(i)
@@ -297,30 +302,31 @@ class Game{
         }
 
         if(friendlyAliveCards.length == 0 && enemyAliveCards.length > 0){
-            console.log("enemy won");
 
             let likusiosKortos = enemyAliveCards.length
             let HealthHTML = document.querySelector(".player-health")
             for(let i=0; i<likusiosKortos;i++){
                 let cardAttack = allEnemyCards[enemyAliveCards[i]].querySelector(".attack").innerText
-                console.log(cardAttack, "tiek dmg turi gaut")
+
+                allEnemyCards[enemyAliveCards[i]].querySelector(".attack").classList.add("enemy-damage-animation")
+                setTimeout(()=>{allEnemyCards[enemyAliveCards[i]].querySelector(".attack").classList.remove("enemy-damage-animation")},1000)
+
                 HealthHTML.innerText = parseInt(HealthHTML.innerText,10) - parseInt(cardAttack,10)
                 HealthHTML.classList.add("red-text")
             }
         }
 
         if(friendlyAliveCards.length > 0 && enemyAliveCards.length == 0){
-            console.log("player won");
 
             let likusiosKortos = friendlyAliveCards.length
             let HealthHTML = document.querySelector(".enemy-health")
             for(let i=0; i<likusiosKortos;i++){
 
-                console.log(allFriendlyCards[friendlyAliveCards[i]], "index kortos kurios reikia imt dmg");
-                console.log(allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").innerText, "kortos attack reioksme");
-                
                 let cardAttack = allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").innerText
-                console.log(cardAttack, "tiek dmg turi gaut")
+
+                allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").classList.add("hero-damage-animation")
+               setTimeout(()=>{allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").classList.remove("hero-damage-animation")},1000)
+
                 HealthHTML.innerText = parseInt(HealthHTML.innerText,10) - parseInt(cardAttack,10)
                 HealthHTML.classList.add("red-text")
             }
