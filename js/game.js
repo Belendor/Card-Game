@@ -3,7 +3,7 @@ import Card from "./Card.js"
 const GAME = document.querySelector(".game")
 const enemyField = GAME.querySelector('.enemy-field')
 const playerField = GAME.querySelector('.player-field')
-const playerHand =  GAME.querySelector('.field.player-hand')
+let playerHand =  GAME.querySelector('.field.player-hand')
 const chooseField = GAME.querySelector(".choose-card")
 
 const lostScreen = document.querySelector(".lost-screen")
@@ -142,6 +142,7 @@ class Game{
 
     createPlayerCard(playerTurn){
         if(playerTurn){
+            playerHand.innerHTML = ""
             slot1.innerHTML = ""
             slot2.innerHTML = ""
             slot3.innerHTML = ""
@@ -155,6 +156,7 @@ class Game{
             console.log("Generating card4");
             new Card(1,3, slot4, true, GAME, this, 1, true)
         }else{
+            playerHand.innerHTML = ""
             slot1.innerHTML = ""
             slot2.innerHTML = ""
             slot3.innerHTML = ""
@@ -197,6 +199,8 @@ class Game{
         this.playerCards = playerField.querySelectorAll(".card")
         this.enemyCards = enemyField.querySelectorAll(".card")
 
+
+
         // Player Field to array****************
        for(let i =0;i<this.playerCards.length;i++){
         playerBattlefield.push([this.playerCards[i].querySelector(".attack").innerText, this.playerCards[i].querySelector(".defence").innerText])
@@ -217,63 +221,75 @@ class Game{
         // ************************************
         let randomEnemy = Math.floor(Math.random()*enemyBattlefield.length)
 
-        // ********Shield**********************
-        this.ckeckForShield(playerBattlefield[this.cardIndexToAttack], enemyBattlefield[randomEnemy], this.playerCards[this.cardIndexToAttack])
-        this.ckeckForShield(enemyBattlefield[randomEnemy], playerBattlefield[this.cardIndexToAttack], this.enemyCards[randomEnemy])
-        // ************************************
-
-        playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomEnemy][0]
-        enemyBattlefield[randomEnemy][1] = enemyBattlefield[randomEnemy][1] - playerBattlefield[this.cardIndexToAttack][0]
-        this.playerCards[this.cardIndexToAttack].classList.add("animation")
-       
-        if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText != playerBattlefield[this.cardIndexToAttack][1]){
-            this.playerCards[this.cardIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
+        if(enemyBattlefield.length !== 0 && playerBattlefield.length !==0){
+    
+            // ********Shield**********************
+            this.ckeckForShield(playerBattlefield[this.cardIndexToAttack], enemyBattlefield[randomEnemy], this.playerCards[this.cardIndexToAttack])
+            this.ckeckForShield(enemyBattlefield[randomEnemy], playerBattlefield[this.cardIndexToAttack], this.enemyCards[randomEnemy])
+            // ************************************
+    
+          
+            playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomEnemy][0]
+            enemyBattlefield[randomEnemy][1] = enemyBattlefield[randomEnemy][1] - playerBattlefield[this.cardIndexToAttack][0]
+            this.playerCards[this.cardIndexToAttack].classList.add("animation")
+           
+            if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText != playerBattlefield[this.cardIndexToAttack][1]){
+                this.playerCards[this.cardIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
+            }
+            this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
+            
+            
+            if(this.enemyCards[randomEnemy].querySelector(".defence").innerText != enemyBattlefield[randomEnemy][1]){
+                this.enemyCards[randomEnemy].querySelector(".defence.stat-box").classList.add("red-text")
+            }
+            this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
+    
+    
+            this.enemyCards[randomEnemy].classList.add("hit-animation")
+            
+             //    ********Deathrattle*************
+            this.checkDeathrattle(this.playerCards[this.cardIndexToAttack], this.cardIndexToAttack, playerField, this.playerCards)
+            this.checkDeathrattle(this.enemyCards[randomEnemy], randomEnemy, enemyField, this.enemyCards)
+            //    *********************************
         }
-        this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
-        
-        
-        if(this.enemyCards[randomEnemy].querySelector(".defence").innerText != enemyBattlefield[randomEnemy][1]){
-            this.enemyCards[randomEnemy].querySelector(".defence.stat-box").classList.add("red-text")
-        }
-        this.enemyCards[randomEnemy].querySelector(".defence").innerText = enemyBattlefield[randomEnemy][1]
 
-
-        this.enemyCards[randomEnemy].classList.add("hit-animation")
-        
-         //    ********Deathrattle*************
-        this.checkDeathrattle(this.playerCards[this.cardIndexToAttack], this.cardIndexToAttack, playerField, this.playerCards)
-        this.checkDeathrattle(this.enemyCards[randomEnemy], randomEnemy, enemyField, this.enemyCards)
-        //    *********************************
         this.checkWhoWon(playerField, enemyField)
 
        setTimeout(()=>{
-        if(this.enemyCards[randomEnemy].classList.contains("hit-animation")){
-            this.enemyCards[randomEnemy].classList.remove("hit-animation")
-        }
-        
-        if(this.playerCards[this.cardIndexToAttack].classList.contains("animation")){
-            this.playerCards[this.cardIndexToAttack].classList.remove("animation")
-        }
-        
-       
-        if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <= 0){
-            this.playerCards[this.cardIndexToAttack].remove()
-            if(this.cardIndexToAttack == playerField.querySelectorAll(".card").length && this.cardIndexToAttack > 0){
-                this.cardIndexToAttack = 0
+        if(enemyBattlefield.length !== 0 && playerBattlefield.length !==0){
+
+            if(this.enemyCards[randomEnemy].classList.contains("hit-animation")){
+                this.enemyCards[randomEnemy].classList.remove("hit-animation")
             }
-        }else{
-            if(playerField.querySelectorAll(".card").length > 0){
-                if(playerField.querySelectorAll(".card").length-1 <= this.cardIndexToAttack){
+            
+            if(this.playerCards[this.cardIndexToAttack].classList.contains("animation")){
+                this.playerCards[this.cardIndexToAttack].classList.remove("animation")
+            }
+            
+           
+            if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <= 0){
+                this.playerCards[this.cardIndexToAttack].remove()
+                if(this.cardIndexToAttack == playerField.querySelectorAll(".card").length && this.cardIndexToAttack > 0){
                     this.cardIndexToAttack = 0
-                }else{
-                    this.cardIndexToAttack++
+                }
+            }else{
+                if(playerField.querySelectorAll(".card").length > 0){
+                    if(playerField.querySelectorAll(".card").length-1 <= this.cardIndexToAttack){
+                        this.cardIndexToAttack = 0
+                    }else{
+                        this.cardIndexToAttack++
+                    }
                 }
             }
+    
+            if(this.enemyCards[randomEnemy].querySelector(".defence").innerText <= 0){
+                this.enemyCards[randomEnemy].remove()
+            }
+
+
         }
 
-        if(this.enemyCards[randomEnemy].querySelector(".defence").innerText <= 0){
-            this.enemyCards[randomEnemy].remove()
-        }
+
         this.checkLost()
         if(enemyField.querySelectorAll(".card").length == 0 || playerField.querySelectorAll(".card").length == 0 ){
             this.level++
@@ -334,11 +350,15 @@ class Game{
     }
 
     ckeckForShield(cardInArr, randomEnemyArr, checkedCard){
-        if( cardInArr[2] === 1){
-            cardInArr[1] = parseInt(cardInArr[1],10) + parseInt(randomEnemyArr[0],10)
-            checkedCard.classList.remove("shield")
-            cardInArr[2] = 0
-        }
+        try{
+            if( cardInArr[2] === 1){
+                cardInArr[1] = parseInt(cardInArr[1],10) + parseInt(randomEnemyArr[0],10)
+                checkedCard.classList.remove("shield")
+                cardInArr[2] = 0
+            }
+        }catch(err){
+
+        }   
     }
     addShield(ilgis, indexas, zaidejas){
         let randomindex = Math.floor(Math.random()*ilgis)

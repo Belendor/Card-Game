@@ -124,8 +124,8 @@ class Card{
 
     addEvents(){
         if(this.playerTurn){
-            let playerHand = document.querySelector('.field.player-hand')
             let playerField = document.querySelector('.player-field')
+            let playerHand = document.querySelector('.field.player-hand')
             let dragedCard = ""
             this.HTML.addEventListener("dragstart", ()=>{
                 setTimeout(()=>{
@@ -169,32 +169,37 @@ class Card{
                 playerHand.append(dragedCard)
             })
     
-    
-            if(document.querySelector(".choose-card").classList.contains("hidden")){
-                playerField.addEventListener("dragover",function(e){
-                    e.preventDefault()
-                    playerField.classList.remove("green-field")
-                })
-                playerField.addEventListener("dragenter", function(){
-                })
-                playerField.addEventListener("dragleave", function(){
-                })
-                playerField.addEventListener("drop",(e)=>{
-          
-                    if(this.HTML.classList.contains("summonCat")){
-                        dragedCard.classList.remove("summonCat")
-                            
-                        this.sumonCat()
-                        return playerField.append(dragedCard)
-                    }
-                     
-                    playerField.append(dragedCard)
-                })
-            }
+
+            console.log(playerField.querySelectorAll(".card").length, "tiek yra friendly zaideju");
+            
+                if(document.querySelector(".choose-card").classList.contains("hidden")){
+                    playerField.addEventListener("dragover",function(e){
+                        e.preventDefault()
+                        playerField.classList.remove("green-field")
+                    })
+                    playerField.addEventListener("dragenter", function(){
+                    })
+                    playerField.addEventListener("dragleave", function(){
+                    })
+                    playerField.addEventListener("drop",(e)=>{
+              
+                        if(this.HTML.classList.contains("summonCat")){
+                            dragedCard.classList.remove("summonCat")
+                                
+                            this.sumonCat()
+                            return playerField.append(dragedCard)
+                        }
+                         
+                        playerField.append(dragedCard)
+                    })
+                }
+            
         }else{
             let playerHand = document.querySelector('.field.player-hand')
             let playerField = document.querySelector('.enemy-field')
             let dragedCard = ""
+
+        
             this.HTML.addEventListener("dragstart", ()=>{
                 setTimeout(()=>{
                     dragedCard = this.HTML
@@ -227,38 +232,47 @@ class Card{
                 this.game.cardsLeftToChoose()
                 playerHand.append(dragedCard)
             })
+            console.log(playerField.querySelectorAll('.card').length, "tiek yra enemy zaideju");
+            
+           
+                playerField.addEventListener("dragover",function(e){
+                    e.preventDefault()
+                })
+                playerField.addEventListener("dragenter", function(){
+                    playerField.classList.remove("green-field")
+                })
+                playerField.addEventListener("dragleave", function(){
+                })
+                playerField.addEventListener("drop",(e)=>{
+          
+                    if(this.HTML.classList.contains("summonCat")){
+                        dragedCard.classList.remove("summonCat")
+                            
+                        this.sumonCat()
+                        return playerField.append(dragedCard)
+                    }
+                    if(playerField.querySelectorAll('.card').length <=6){
+                        playerField.append(dragedCard)
+                    }
 
-            playerField.addEventListener("dragover",function(e){
-                e.preventDefault()
-            })
-            playerField.addEventListener("dragenter", function(){
-                playerField.classList.remove("green-field")
-            })
-            playerField.addEventListener("dragleave", function(){
-            })
-            playerField.addEventListener("drop",(e)=>{
-      
-                if(this.HTML.classList.contains("summonCat")){
-                    dragedCard.classList.remove("summonCat")
-                        
-                    this.sumonCat()
-                    return playerField.append(dragedCard)
-                }
-                 
-                playerField.append(dragedCard)
-            })
+                })
         }
     }
     sumonCat(){
         if(this.canSummon){
+            console.log("reikia summonint katina");
+            console.log("tiek player boar", this.DOM.querySelector('.player-field').querySelectorAll(".card").length);
+            console.log("tiek enemy board", this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length);
+            
+            
             if(this.game.playerTurn){
-                if(this.DOM.querySelector('.player-field').querySelectorAll(".card").length < 7){
+                if(this.DOM.querySelector('.player-field').querySelectorAll(".card").length < 5){
                     setTimeout(()=>{
                         new Card(1,1, this.DOM.querySelector('.player-field'), true, this.GAME, this.game, 0, this.canSummon)
                     }, 0)
                 }
             }else{
-                if(this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length < 7){
+                if(this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length < 5){
                     setTimeout(()=>{
                         new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.GAME, this.game, 0, this.canSummon)
                     }, 0)
