@@ -216,3 +216,8 @@
     left: 620px;
     top: 540px
 }
+
+.green-field{
+    background-color: rgba(17, 153, 17, 0.39);
+    border-radius: 20px;
+}

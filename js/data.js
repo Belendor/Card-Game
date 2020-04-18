@@ -1,4 +1,15 @@
 let cards = {
+    level0: [
+        {name: "Tobbycat",
+        attack: 1,
+        defence: 1,
+        ability: "",
+        picture: 'url(https://i.imgur.com/VlqJyBw.png)',
+        pictureAlt: "url(./img/alleycat.png)",
+        canSummon: false,
+        hasShield: false,
+        deathrattle: false,},
+    ],
     level1: [
         {name: "Alleycat",
         attack: 1,

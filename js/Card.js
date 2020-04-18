@@ -33,9 +33,16 @@ class Card{
             this.canSummon = selectedCard.canSummon
             this.hasShield = selectedCard.hasShield
             this.deathrattle = selectedCard.deathrattle
+
+            let klasesName = ""
+            if(this.playerTurn){
+                klasesName = "player"
+            }else{
+                klasesName = "enemy"
+            }
    
         
-            let HTML = `<div class="card " style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class="card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack player">${selectedCard.attack}</div>
@@ -63,24 +70,52 @@ class Card{
             }
             
             this.game.playerCardObjects.push(this)
-        }else{
-            let tokenNr = this.cardLevel - 11
-            let selectedToken = cards.tokens[tokenNr]
+        }
+        if(this.cardLevel === 0){
+            let radomCard = 0
+            let selectedCard = cards.level0[radomCard]
+            this.attack = selectedCard.attack
+            this.defence = selectedCard.defence
+            this.canSummon = selectedCard.canSummon
+            this.hasShield = selectedCard.hasShield
+            this.deathrattle = selectedCard.deathrattle
 
-            let HTML = `<div style="background-image: ${selectedToken.pictureAlt}; background-size: cover;" class="card token" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let klasesName = ""
+            if(this.playerTurn){
+                klasesName = "player"
+            }else{
+                klasesName = "enemy"
+            }
+   
+        
+            let HTML = `<div class="card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
-                <div class="stat-box attack">${this.attack}</div>
-                <div class="stat-box defence">${this.defence}</div>
+                <div class="stat-box attack player">${selectedCard.attack}</div>
+                <div class="stat-box defence">${selectedCard.defence}</div>
             </div>
             </div>`
+            this.game.cardIndex++
+            
+
             this.target.insertAdjacentHTML("beforeend", HTML )
 
-            let id = "#Nr" + this.game.cardIndex
-            
+            let id = "#Nr"+ (this.game.cardIndex - 1)
+        
             this.HTML = this.target.querySelector(id)
+
+            
+            if(this.hasShield){
+                this.HTML.classList.add("shield")
+            }
+            if(this.deathrattle){
+                this.HTML.classList.add("deathrattle", "addShield")
+            } 
+            if(this.canSummon){
+                this.HTML.classList.add("summonCat")
+            }
             
             this.game.playerCardObjects.push(this)
-            this.game.cardIndex++
         } 
     }
     clickEvent(){
@@ -88,7 +123,6 @@ class Card{
     }
 
     addEvents(){
-        console.log("adding events", this.playerTurn)
         if(this.playerTurn){
             let playerHand = document.querySelector('.field.player-hand')
             let playerField = document.querySelector('.player-field')
@@ -98,16 +132,33 @@ class Card{
                     dragedCard = this.HTML
                     this.HTML.classList.add("hidden")
                 },0)
+                
+                if(this.HTML.classList.contains("player") && this.HTML.classList.contains("card")){
+                    playerHand.classList.add("green-field")
+                    if(document.querySelector(".choose-card").classList.contains("hidden")){
+                        playerField.classList.add("green-field")
+                    }
+                }
             })
+
             this.HTML.addEventListener("dragend", ()=>{
+                if(this.HTML.classList.contains("player") && this.HTML.classList.contains("card")){
+                    playerHand.classList.remove("green-field")
+                    playerField.classList.remove("green-field")
+                }
                 setTimeout(()=>{
                     this.HTML.classList.remove("hidden")
                     dragedCard = ""
                 },0)
             })
     
-            playerHand.addEventListener("dragover",function(e){
+            playerHand.addEventListener("dragover",(e)=>{
                 e.preventDefault()
+                if(this.HTML.classList.contains("player") && this.HTML.classList.contains("card")){
+                    if(playerHand.classList.contains("green-field")){
+                        playerHand.classList.remove("green-field")
+                    }
+                }
             })
             playerHand.addEventListener("dragenter", function(){
             })
@@ -119,25 +170,27 @@ class Card{
             })
     
     
-            
-            playerField.addEventListener("dragover",function(e){
-                e.preventDefault()
-            })
-            playerField.addEventListener("dragenter", function(){
-            })
-            playerField.addEventListener("dragleave", function(){
-            })
-            playerField.addEventListener("drop",(e)=>{
-      
-                if(this.HTML.classList.contains("summonCat")){
-                    dragedCard.classList.remove("summonCat")
-                        
-                    this.sumonCat()
-                    return playerField.append(dragedCard)
-                }
-                 
-                playerField.append(dragedCard)
-            })
+            if(document.querySelector(".choose-card").classList.contains("hidden")){
+                playerField.addEventListener("dragover",function(e){
+                    e.preventDefault()
+                    playerField.classList.remove("green-field")
+                })
+                playerField.addEventListener("dragenter", function(){
+                })
+                playerField.addEventListener("dragleave", function(){
+                })
+                playerField.addEventListener("drop",(e)=>{
+          
+                    if(this.HTML.classList.contains("summonCat")){
+                        dragedCard.classList.remove("summonCat")
+                            
+                        this.sumonCat()
+                        return playerField.append(dragedCard)
+                    }
+                     
+                    playerField.append(dragedCard)
+                })
+            }
         }else{
             let playerHand = document.querySelector('.field.player-hand')
             let playerField = document.querySelector('.enemy-field')
@@ -147,6 +200,13 @@ class Card{
                     dragedCard = this.HTML
                     this.HTML.classList.add("hidden")
                 },0)
+
+                if(this.HTML.classList.contains("enemy") && this.HTML.classList.contains("card")){
+                    playerHand.classList.add("green-field")
+                    if(document.querySelector(".choose-card").classList.contains("hidden")){
+                        playerField.classList.add("green-field")
+                    }
+                }
             })
             this.HTML.addEventListener("dragend", ()=>{
                 setTimeout(()=>{
@@ -156,9 +216,10 @@ class Card{
             })
     
             playerHand.addEventListener("dragover",function(e){
-                e.preventDefault()
+                e.preventDefault()   
             })
             playerHand.addEventListener("dragenter", function(){
+               
             })
             playerHand.addEventListener("dragleave", function(){
             })
@@ -166,13 +227,12 @@ class Card{
                 this.game.cardsLeftToChoose()
                 playerHand.append(dragedCard)
             })
-    
-    
-            
+
             playerField.addEventListener("dragover",function(e){
                 e.preventDefault()
             })
             playerField.addEventListener("dragenter", function(){
+                playerField.classList.remove("green-field")
             })
             playerField.addEventListener("dragleave", function(){
             })
@@ -194,13 +254,13 @@ class Card{
             if(this.game.playerTurn){
                 if(this.DOM.querySelector('.player-field').querySelectorAll(".card").length < 7){
                     setTimeout(()=>{
-                        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,11))
+                        new Card(1,1, this.DOM.querySelector('.player-field'), true, this.GAME, this.game, 0, this.canSummon)
                     }, 0)
                 }
             }else{
                 if(this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length < 7){
                     setTimeout(()=>{
-                        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.DOM, this.game,11))
+                        new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.GAME, this.game, 0, this.canSummon)
                     }, 0)
                 }
             }
