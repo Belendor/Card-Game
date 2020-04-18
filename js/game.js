@@ -123,7 +123,6 @@ class Game{
     }
 
     setMana(num){
-        // mana.innerHTML =   `Gold: <span style="color: #DAA520; font-size: 30px;">${num}</span>`
         this.mana = num;
     }
 
@@ -216,27 +215,17 @@ class Game{
             }
        }
         // ************************************
-
         let randomEnemy = Math.floor(Math.random()*enemyBattlefield.length)
 
-        // Jei yra Shield**********************
-        if(playerBattlefield[this.cardIndexToAttack] != undefined){
-            if(playerBattlefield[this.cardIndexToAttack][2] === 1){
-                
-                playerBattlefield[this.cardIndexToAttack][1] = parseInt(playerBattlefield[this.cardIndexToAttack][1],10) + parseInt(enemyBattlefield[randomEnemy][0],10)
-                
-                this.playerCards[this.cardIndexToAttack].classList.remove("shield")
-                playerBattlefield[this.cardIndexToAttack][2] = 0
-            }
-        }
+        // ********Shield**********************
+        this.ckeckForShield(playerBattlefield[this.cardIndexToAttack], enemyBattlefield[randomEnemy], this.playerCards[this.cardIndexToAttack])
+        this.ckeckForShield(enemyBattlefield[randomEnemy], playerBattlefield[this.cardIndexToAttack], this.enemyCards[randomEnemy])
         // ************************************
+
         playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomEnemy][0]
         enemyBattlefield[randomEnemy][1] = enemyBattlefield[randomEnemy][1] - playerBattlefield[this.cardIndexToAttack][0]
         this.playerCards[this.cardIndexToAttack].classList.add("animation")
        
-  
-        console.log(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText, playerBattlefield[this.cardIndexToAttack][1])
-        console.log(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText == playerBattlefield[this.cardIndexToAttack][1])
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText != playerBattlefield[this.cardIndexToAttack][1]){
             this.playerCards[this.cardIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
         }
@@ -252,53 +241,31 @@ class Game{
         this.enemyCards[randomEnemy].classList.add("hit-animation")
         
          //    ********Deathrattle*************
-        console.log("korta kuria tikrinam:", this.playerCards[this.cardIndexToAttack] ,"arr reikia deathrattle, mires?:", this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText, "turi drathrattle  klase:", this.playerCards[this.cardIndexToAttack].classList.contains("deathrattle"), "turi pridet shield klase:", this.playerCards[this.cardIndexToAttack].classList.contains("addShield"));
-        
-        if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <=0 &&
-        this.playerCards[this.cardIndexToAttack].classList.contains("deathrattle") && 
-        this.playerCards[this.cardIndexToAttack].classList.contains("addShield")){
-              console.log("toliau tikrinam ar kortu ilgis yra didesnis uz 1", playerField.querySelectorAll(".card").length);
-              
-            if(playerField.querySelectorAll(".card").length > 1){
-                console.log("paleidziamas funkcija uzmest random skyda");
-
-                this.addShield(playerField.querySelectorAll(".card").length, this.cardIndexToAttack, this.playerCards)
-            }
-        }
-        console.log("arr reikia det kazkam skyda?", this.enemyCards[randomEnemy].querySelector(".defence").innerText, this.enemyCards[randomEnemy].classList.contains("deathrattle"),this.enemyCards[randomEnemy].classList.contains("addShield"))
-        if(this.enemyCards[randomEnemy].querySelector(".defence").innerText <=0 &&
-        this.enemyCards[randomEnemy].classList.contains("deathrattle") && 
-        this.enemyCards[randomEnemy].classList.contains("addShield")){
-              
-            if(enemyField.querySelectorAll(".card").length > 1){
-                console.log("paleidziamas funkcija uzmest random skyda ant prieso");
-
-                this.addShield(enemyField.querySelectorAll(".card").length, randomEnemy, this.enemyCards)
-            }
-        }
+        this.checkDeathrattle(this.playerCards[this.cardIndexToAttack], this.cardIndexToAttack, playerField, this.playerCards)
+        this.checkDeathrattle(this.enemyCards[randomEnemy], randomEnemy, enemyField, this.enemyCards)
+        //    *********************************
 
        setTimeout(()=>{
         if(this.enemyCards[randomEnemy].classList.contains("hit-animation")){
             this.enemyCards[randomEnemy].classList.remove("hit-animation")
         }
         
-        this.playerCards[this.cardIndexToAttack].classList.remove("animation")
+        if(this.playerCards[this.cardIndexToAttack].classList.contains("animation")){
+            this.playerCards[this.cardIndexToAttack].classList.remove("animation")
+        }
+        
        
         if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText <= 0){
             this.playerCards[this.cardIndexToAttack].remove()
-            if(this.cardIndexToAttack == playerField.querySelectorAll(".card").length && this.cardIndexToAttack>0){
+            if(this.cardIndexToAttack == playerField.querySelectorAll(".card").length && this.cardIndexToAttack > 0){
                 this.cardIndexToAttack = 0
             }
         }else{
             if(playerField.querySelectorAll(".card").length > 0){
-                console.log(playerField.querySelectorAll(".card").length-1, this.cardIndexToAttack);
-                
                 if(playerField.querySelectorAll(".card").length-1 <= this.cardIndexToAttack){
                     this.cardIndexToAttack = 0
                 }else{
-
                     this.cardIndexToAttack++
-                    console.log(this.cardIndexToAttack)
                 }
             }
         }
@@ -307,43 +274,38 @@ class Game{
             this.enemyCards[randomEnemy].remove()
         }
 
-        // this.checkLost()    
-        console.log(enemyField.querySelectorAll(".card").length, "enemy field left");
-        console.log(playerField.querySelectorAll(".card").length, "player field left");
-        
         if(enemyField.querySelectorAll(".card").length == 0 || playerField.querySelectorAll(".card").length == 0 ){
-        this.level++
-        this.playerTurn = true
-        this.levelCeck()
+            this.level++
+            this.playerTurn = true
+            this.levelCeck()
         }else if (enemyField.querySelectorAll(".card").length !== 0 && playerField.querySelectorAll(".card").length !== 0)(
             this.battle()
         )
-      
         },1500)
-
+    }
+    ckeckForShield(cardInArr, randomEnemyArr, checkedCard){
+        if( cardInArr[2] === 1){
+            cardInArr[1] = parseInt(cardInArr[1],10) + parseInt(randomEnemyArr[0],10)
+            checkedCard.classList.remove("shield")
+            cardInArr[2] = 0
         }
-    // endSelect(){ 
-    //     chooseField.classList.toggle("hidden")
-    //     if(chooseField.classList.contains("hidden")){
-    //         toggleShop.innerHTML = `Show <span style="font-weight: bold;">Shop</span>`
-    //     }else{
-    //         toggleShop.innerHTML = `Hide <span style="font-weight: bold;">Shop</span>`
-    //     }
-    // }
+    }
     addShield(ilgis, indexas, zaidejas){
-        console.log("dedamas skydas ant random");
-
         let randomindex = Math.floor(Math.random()*ilgis)
-        console.log("random index ant kurio det yra", randomindex);
-
-            if(randomindex != indexas){
-                console.log("korta su tokiu index gauna skyda", randomindex);
-                zaidejas[randomindex].classList.add("shield")
-            }else{
-                console.log(randomindex, "pasirinktas random skaicius yra lygus puolikui", indexas)
-                this.addShield(ilgis, indexas) 
+        if(randomindex != indexas){
+            zaidejas[randomindex].classList.add("shield")
+        }else{
+            this.addShield(ilgis, indexas, zaidejas) 
+        }
+    }
+    checkDeathrattle(checkedCard, checkedCardIndex, checkedCardField, checkedFieldCards){
+        if( checkedCard.querySelector(".defence").innerText <=0 &&
+            checkedCard.classList.contains("deathrattle") && 
+            checkedCard.classList.contains("addShield")){
+            if(checkedCardField.querySelectorAll(".card").length > 1){
+                this.addShield(checkedCardField.querySelectorAll(".card").length, checkedCardIndex, checkedFieldCards)
             }
-        
+        }
     }
     checkLost(){
 

@@ -192,13 +192,17 @@ class Card{
     sumonCat(){
         if(this.canSummon){
             if(this.game.playerTurn){
-                setTimeout(()=>{
-                    this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,11))
-                }, 0)
+                if(this.DOM.querySelector('.player-field').querySelectorAll(".card").length < 7){
+                    setTimeout(()=>{
+                        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.player-field'), true, this.DOM, this.game,11))
+                    }, 0)
+                }
             }else{
-                setTimeout(()=>{
-                    this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.DOM, this.game,11))
-                }, 0)
+                if(this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length < 7){
+                    setTimeout(()=>{
+                        this.game.playerTokenObjects.push(new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.DOM, this.game,11))
+                    }, 0)
+                }
             }
         }
     }   
