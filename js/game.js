@@ -87,9 +87,7 @@ class Game{
         })
     }
 
-    levelCeck(){
-        console.log("First Level check");
-        
+    levelCeck(){  
         if(document.querySelector(".choose-card").classList.contains("hidden")){
             document.querySelector(".choose-card").classList.remove("hidden")
         }
@@ -100,18 +98,15 @@ class Game{
             this.cardIndexToAttack = 0
             battle.innerText = "Battle"
         }
-        console.log("player Count:", this.playerCount)
         if(this.playerCount === 2){
             if(this.playerTurn){
                 battle.innerText = "End Turn"
                 cardSelectText.innerText = "First Player Select yor Card"
                 turnCounter.innerText = `Turn: ${this.level}`
-                console.log("setting player one cards")
                 this.setMana(this.level)
                 this.createPlayerCard(true)
                 this.cardIndexToAttack = 0
             }else{
-                console.log("seting cards for second player")
                 cardSelectText.innerText = "Second Player Select yor Card"
                 turnCounter.innerText = `Turn: ${this.level}`
                 this.setMana(this.level)
@@ -244,6 +239,7 @@ class Game{
         this.checkDeathrattle(this.playerCards[this.cardIndexToAttack], this.cardIndexToAttack, playerField, this.playerCards)
         this.checkDeathrattle(this.enemyCards[randomEnemy], randomEnemy, enemyField, this.enemyCards)
         //    *********************************
+        this.checkWhoWon(playerField, enemyField)
 
        setTimeout(()=>{
         if(this.enemyCards[randomEnemy].classList.contains("hit-animation")){
@@ -273,7 +269,7 @@ class Game{
         if(this.enemyCards[randomEnemy].querySelector(".defence").innerText <= 0){
             this.enemyCards[randomEnemy].remove()
         }
-
+        this.checkLost()
         if(enemyField.querySelectorAll(".card").length == 0 || playerField.querySelectorAll(".card").length == 0 ){
             this.level++
             this.playerTurn = true
@@ -283,6 +279,54 @@ class Game{
         )
         },1500)
     }
+    checkWhoWon(playerField, enemyField){
+        console.log("checking who won");
+        let friendlyAliveCards = []
+        let enemyAliveCards = []
+        let allFriendlyCards = playerField.querySelectorAll(".card")
+        let allEnemyCards = enemyField.querySelectorAll(".card")
+        for(let i = 0;i<allFriendlyCards.length;i++){
+            if(allFriendlyCards[i].querySelector(".defence").innerText >0){
+                friendlyAliveCards.push(i)
+            }
+        }
+        for(let i = 0;i<allEnemyCards.length;i++){
+            if(allEnemyCards[i].querySelector(".defence").innerText >0){
+                enemyAliveCards.push(i)
+            }
+        }
+
+        if(friendlyAliveCards.length == 0 && enemyAliveCards.length > 0){
+            console.log("enemy won");
+
+            let likusiosKortos = enemyAliveCards.length
+            let HealthHTML = document.querySelector(".player-health")
+            for(let i=0; i<likusiosKortos;i++){
+                let cardAttack = allEnemyCards[enemyAliveCards[i]].querySelector(".attack").innerText
+                console.log(cardAttack, "tiek dmg turi gaut")
+                HealthHTML.innerText = parseInt(HealthHTML.innerText,10) - parseInt(cardAttack,10)
+                HealthHTML.classList.add("red-text")
+            }
+        }
+
+        if(friendlyAliveCards.length > 0 && enemyAliveCards.length == 0){
+            console.log("player won");
+
+            let likusiosKortos = friendlyAliveCards.length
+            let HealthHTML = document.querySelector(".enemy-health")
+            for(let i=0; i<likusiosKortos;i++){
+
+                console.log(allFriendlyCards[friendlyAliveCards[i]], "index kortos kurios reikia imt dmg");
+                console.log(allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").innerText, "kortos attack reioksme");
+                
+                let cardAttack = allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").innerText
+                console.log(cardAttack, "tiek dmg turi gaut")
+                HealthHTML.innerText = parseInt(HealthHTML.innerText,10) - parseInt(cardAttack,10)
+                HealthHTML.classList.add("red-text")
+            }
+        }
+    }
+
     ckeckForShield(cardInArr, randomEnemyArr, checkedCard){
         if( cardInArr[2] === 1){
             cardInArr[1] = parseInt(cardInArr[1],10) + parseInt(randomEnemyArr[0],10)
@@ -309,19 +353,20 @@ class Game{
     }
     checkLost(){
 
-        let cardsLefinHand = playerHand.querySelectorAll(".card")
-        let cardsLefinBattlefield = playerField.querySelectorAll(".card")
-        let cardsleftinenemyField = enemyField.querySelectorAll(".card")
+    let playerHealth = document.querySelector(".player-health").innerText
+    let enemyHealth = document.querySelector(".enemy-health").innerText
+        
+    if( playerHealth <=0 || enemyHealth<=0 ){
+            let textField = lostScreen.querySelector(".defeat-text")
+            lostScreen.classList.remove("hidden")
+            if(playerHealth<=0){
+                textField.innerText = `Second player WON!`
+            }
+            if(enemyHealth<=0){
+                textField.innerText = `First player WON!`
+            }
             
-            console.log(cardsLefinHand, cardsLefinBattlefield, cardsleftinenemyField.length, "ckecing lost");
-            if(cardsleftinenemyField.length >0 && 
-                cardsLefinHand.length <= 0&&
-                cardsLefinBattlefield.length <= 0){
-                    let textField = lostScreen.querySelector(".defeat-text")
-                    lostScreen.classList.remove("hidden")
-                    textField.innerText = `Level reached: ${this.level}`
-                    console.log("Defeat");
-                } 
+        } 
         
     }
 }

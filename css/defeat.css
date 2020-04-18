@@ -14,10 +14,10 @@
 }
 .defeat{
     position: absolute;
-    background-image: url(../img/defeat.png);
+    background-image: url(../img/win.png);
     background-repeat: no-repeat;
     background-size: 560px 600px;
-    width: 600px;
+    width: 680px;
     height: 650px;
     top: 50%;
     left: 55%;
@@ -30,6 +30,6 @@
     color: black;
     width: 150px;
     height: 140px;
-    top: 150px;
-    left: 200px;
+    top: 180px;
+    left: 205px;
 }

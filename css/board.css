@@ -189,3 +189,30 @@
         color: black;
         font-size: 40px;
     }
+
+
+.health-box{
+    display: flex;
+    width: 70px;
+    height: 100px;
+    background-image: url(../img/health.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 50px;
+    padding-top: 17px;
+}
+.enemy-health{
+    display: flex;
+    position: absolute;
+    left: 620px;
+    top: 20px
+}
+.player-health{
+    display: flex;
+    position: absolute;
+    left: 620px;
+    top: 540px
+}
