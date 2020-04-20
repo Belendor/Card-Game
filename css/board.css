@@ -68,12 +68,13 @@
     text-align: center;
     top: 610px;
     left: 0;
+    z-index: 3;
 }
 
 .hand{
     position: relative;
 }
-.hand::after{
+/* .hand::after{
     position: absolute;
     content: "Your hand";
     top: 40px;
@@ -83,7 +84,7 @@
     height: 50px;
     color: rgba(0, 0, 0, 0.315);
     z-index: -2 ;
-}
+} */
 
 .hidden{
     visibility: hidden;

@@ -238,3 +238,80 @@
     overflow: visible;
 
 }
+.taunt{
+    position: relative;
+   
+}
+.taunt::before{
+    content: "";
+    border-style: solid;
+    border-color: transparent transparent rgba(172, 132, 59, 0.616) transparent;
+    border-width: 0 25px 25px 25px;
+    height: 20;
+    width: 120px;
+    position: absolute;
+    margin: 20px 0 50px 0;
+    top: -120px;
+}
+.taunt::after{
+    position: absolute;
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: -75px;
+    width: 69px;
+    height: 90px;
+    border: 50px solid transparent;
+    border-top: 140px solid rgba(172, 132, 59, 0.616);
+}
+
+.aoeDmg{
+    position: relative;
+}
+.aoeDmg::before{
+    content: "";
+    position: absolute;
+    top: -80px;
+    left: -65px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 5px solid red;
+    animation-duration: 0.4s;
+    animation-iteration-count: 2;
+    animation-name: aoe;
+    animation-fill-mode: forwards;
+    opacity: 0
+}
+.aoeDmg::after{
+    content: "";
+    position: absolute;
+    top: -80px;
+    left: -65px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 5px solid red;
+    animation-duration: 0.4s;
+    animation-iteration-count: 2;
+    animation-name: aoe;
+    animation-delay: 0.2s;
+    animation-fill-mode: forwards;
+    opacity: 0
+}
+@keyframes aoe{
+    0%{
+        width: 40px;
+        height: 40px;
+        top: -80px;
+        left: -65px;
+        opacity: 1;
+    }
+    100%{
+        width: 1040px;
+        height: 1040px;
+        top: -580px;
+        left: -565px;
+        opacity: 0;
+    }
+}
