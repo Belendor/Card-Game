@@ -16,6 +16,8 @@ class Card{
         this.hasShield = false
         this.deathrattle = false
         this.battleCryReduced = false
+        this.tount = false
+        this.deal1DmgAll = false
         this.consoleLog()
         this.generateCard()
         this.clickEvent()
@@ -26,13 +28,15 @@ class Card{
     generateCard(){
         if(this.cardLevel === 1){
             
-            let radomCard = Math.floor(Math.random()*4)
+            let radomCard =  Math.floor(Math.random()*6)
             let selectedCard = cards.level1[radomCard]
             this.attack = selectedCard.attack
             this.defence = selectedCard.defence
             this.canSummon = selectedCard.canSummon
             this.hasShield = selectedCard.hasShield
             this.deathrattle = selectedCard.deathrattle
+            this.taunt = selectedCard.taunt
+            this.deal1DmgAll = selectedCard.deal1DmgAll
 
             let klasesName = ""
             if(this.playerTurn){
@@ -42,7 +46,7 @@ class Card{
             }
    
         
-            let HTML = `<div class="card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class="  card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack player">${selectedCard.attack}</div>
@@ -62,11 +66,17 @@ class Card{
             if(this.hasShield){
                 this.HTML.classList.add("shield")
             }
+            if(this.taunt){
+                this.HTML.querySelector(".card-description").classList.add("taunt")
+            }
             if(this.deathrattle){
                 this.HTML.classList.add("deathrattle", "addShield")
             } 
             if(this.canSummon){
                 this.HTML.classList.add("summonCat")
+            }
+            if( this.deal1DmgAll){
+                this.HTML.classList.add("deal1DmgAll")
             }
             
             this.game.playerCardObjects.push(this)
@@ -79,6 +89,8 @@ class Card{
             this.canSummon = selectedCard.canSummon
             this.hasShield = selectedCard.hasShield
             this.deathrattle = selectedCard.deathrattle
+            this.deal1DmgAll = selectedCard.deal1DmgAll
+            this.taunt = selectedCard.taunt
 
             let klasesName = ""
             if(this.playerTurn){
@@ -88,7 +100,7 @@ class Card{
             }
    
         
-            let HTML = `<div class="card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class="  card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack player">${selectedCard.attack}</div>
@@ -108,11 +120,17 @@ class Card{
             if(this.hasShield){
                 this.HTML.classList.add("shield")
             }
+            if(this.taunt){
+                this.HTML.querySelector(".card-description").classList.add("taunt")
+            }
             if(this.deathrattle){
                 this.HTML.classList.add("deathrattle", "addShield")
             } 
             if(this.canSummon){
                 this.HTML.classList.add("summonCat")
+            }
+            if( this.deal1DmgAll){
+                this.HTML.classList.add("deal1DmgAll")
             }
             
             this.game.playerCardObjects.push(this)
@@ -214,6 +232,8 @@ class Card{
                 }
             })
             this.HTML.addEventListener("dragend", ()=>{
+
+                playerHand.classList.remove("green-field")
                 setTimeout(()=>{
                     this.HTML.classList.remove("hidden")
                     dragedCard = ""
@@ -244,8 +264,7 @@ class Card{
                 playerField.addEventListener("dragleave", function(){
                 })
                 playerField.addEventListener("drop",(e)=>{
-                    console.log("ar jis tikrai turi summonCat klase? Wtf", this.HTML);
-                    
+                
                     if(this.HTML.classList.contains("summonCat")){
                         dragedCard.classList.remove("summonCat")
                             

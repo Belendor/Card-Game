@@ -222,10 +222,10 @@ class Game{
         // ************************************
         let randomDefending = null
 
-        if(firstPlayerAttacks){
-            randomDefending = Math.floor(Math.random()*enemyBattlefield.length)
+        if(firstPlayerAttacks){ 
+            randomDefending = this.tauntCheck( this.enemyCards )
         }else{
-            randomDefending = Math.floor(Math.random()*playerBattlefield.length)
+            randomDefending = this.tauntCheck( this.playerCards )
         }
 
 
@@ -268,8 +268,12 @@ class Game{
                 this.checkDeathrattle(this.playerCards[this.cardIndexToAttack], this.cardIndexToAttack, playerField, this.playerCards)
                 this.checkDeathrattle(this.enemyCards[randomDefending], randomDefending, enemyField, this.enemyCards)
                 //    *********************************
+                 //    ********Deal 1 DMG to ALL********
+                this.deal1DmmgAll(this.playerCards[this.cardIndexToAttack])
+                this.deal1DmmgAll(this.enemyCards[randomDefending])
+                //    *********************************
             }else{
-                
+
                 if(this.enemyIndexToAttack >= enemyField.querySelectorAll(".card").length){
                     this.enemyIndexToAttack--
                 }else if(enemyField.length <=1 || this.enemyIndexToAttack < 0 ){
@@ -308,7 +312,11 @@ class Game{
                  //    ********Deathrattle*************
                 this.checkDeathrattle(this.playerCards[randomDefending], randomDefending, playerField, this.playerCards)
                 this.checkDeathrattle(this.enemyCards[this.enemyIndexToAttack], this.enemyIndexToAttack, enemyField, this.enemyCards)
-                // 
+                // ***********************************
+                //    ********Deal 1 DMG to ALL********
+                this.deal1DmmgAll(this.playerCards[randomDefending])
+                this.deal1DmmgAll(this.enemyCards[this.enemyIndexToAttack])
+                //    *********************************
             }
         }
 
@@ -341,10 +349,18 @@ class Game{
                         }
                     }
                 }
-        
-                if(this.enemyCards[randomDefending].querySelector(".defence").innerText <= 0){
-                    this.enemyCards[randomDefending].remove()
+                
+                for(let i = 0; i < this.enemyCards.length;i++){
+                    if(this.enemyCards[i].querySelector(".defence").innerText <= 0){
+                        this.enemyCards[i].remove()
+                    }
                 }
+                for(let i = 0; i < this.playerCards.length;i++){
+                    if(this.playerCards[i].querySelector(".defence").innerText <= 0){
+                        this.playerCards[i].remove()
+                    }
+                }
+
             }
         }else{
             if(enemyBattlefield.length !== 0 && playerBattlefield.length !==0){
@@ -373,8 +389,15 @@ class Game{
                     }
                 }
         
-                if(this.playerCards[randomDefending].querySelector(".defence").innerText <= 0){
-                    this.playerCards[randomDefending].remove()
+                for(let i = 0; i < this.enemyCards.length;i++){
+                    if(this.enemyCards[i].querySelector(".defence").innerText <= 0){
+                        this.enemyCards[i].remove()
+                    }
+                }
+                for(let i = 0; i < this.playerCards.length;i++){
+                    if(this.playerCards[i].querySelector(".defence").innerText <= 0){
+                        this.playerCards[i].remove()
+                    }
                 }
             }
         }
@@ -396,7 +419,7 @@ class Game{
                 this.battle(true)
             }
         }
-        },2500)
+        },5500)
     }
     checkWhoWon(playerField, enemyField){
         let friendlyAliveCards = []
@@ -446,7 +469,20 @@ class Game{
             }
         }
     }
+    tauntCheck(battlefieldCards){
+        let randomDefending = Math.floor(Math.random()*battlefieldCards.length)
 
+        for(let i =0; i<battlefieldCards.length;i++){
+            console.log(battlefieldCards[i].querySelector(".card-description"));
+            console.log("ar turi taunt?", battlefieldCards[i].querySelector(".card-description").classList.contains("taunt"));
+            
+            if(battlefieldCards[i].querySelector(".card-description").classList.contains("taunt")){
+                randomDefending = i
+                break
+            }     
+        }
+        return randomDefending
+    }
     ckeckForShield(cardInArr, randomEnemyArr, checkedCard){
         try{
             if( cardInArr[2] === 1){
@@ -472,6 +508,33 @@ class Game{
             checkedCard.classList.contains("addShield")){
             if(checkedCardField.querySelectorAll(".card").length > 1){
                 this.addShield(checkedCardField.querySelectorAll(".card").length, checkedCardIndex, checkedFieldCards)
+            }
+        }
+    }
+    deal1DmmgAll(checkedCard){
+        console.log("tikrinam ar inner text mazas", checkedCard.querySelector(".defence").innerText);
+        console.log("tikrinam ar pasirenkta korta turi dmg1", checkedCard.querySelector(".defence").innerText);
+        
+        if( checkedCard.querySelector(".defence").innerText <=0 &&
+            checkedCard.classList.contains("deal1DmgAll")){
+
+            checkedCard.querySelector(".defence").classList.add("aoeDmg")
+            console.log(checkedCard)
+            for(let i =0; i<this.playerCards.length;i++){
+                if(this.playerCards[i].classList.contains("shield")){
+                    this.playerCards[i].classList.remove("shield")
+                }else{
+                    this.playerCards[i].querySelector(".defence").innerText = parseInt(this.playerCards[i].querySelector(".defence").innerText, 10) - 1
+                    this.playerCards[i].querySelector(".defence").classList.add("red-text")
+                }
+            }
+            for(let i =0; i<this.enemyCards.length;i++){
+                if(this.enemyCards[i].classList.contains("shield")){
+                    this.enemyCards[i].classList.remove("shield")
+                }else{
+                    this.enemyCards[i].querySelector(".defence").innerText = parseInt(this.enemyCards[i].querySelector(".defence").innerText, 10) - 1
+                    this.enemyCards[i].querySelector(".defence").classList.add("red-text")
+                }
             }
         }
     }
