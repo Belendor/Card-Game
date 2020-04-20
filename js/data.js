@@ -5,7 +5,7 @@ let cards = {
         defence: 1,
         ability: "",
         picture: 'url(https://i.imgur.com/VlqJyBw.png)',
-        pictureAlt: "url(./img/alleycat.png)",
+        pictureAlt: "url(./img/tabbycat.png)",
         canSummon: false,
         hasShield: false,
         deathrattle: false,},

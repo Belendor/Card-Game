@@ -244,7 +244,8 @@ class Card{
                 playerField.addEventListener("dragleave", function(){
                 })
                 playerField.addEventListener("drop",(e)=>{
-          
+                    console.log("ar jis tikrai turi summonCat klase? Wtf", this.HTML);
+                    
                     if(this.HTML.classList.contains("summonCat")){
                         dragedCard.classList.remove("summonCat")
                             
