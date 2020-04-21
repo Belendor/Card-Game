@@ -272,6 +272,10 @@ class Game{
                 this.deal1DmmgAll(this.playerCards[this.cardIndexToAttack])
                 this.deal1DmmgAll(this.enemyCards[randomDefending])
                 //    *********************************
+                 //    ********Fives +1/+1 to friendly********
+                this.gives1a1d(this.playerCards[this.cardIndexToAttack], this.playerCards)
+                this.gives1a1d(this.enemyCards[randomDefending], this.enemyCards)
+                //    *********************************
             }else{
 
                 if(this.enemyIndexToAttack >= enemyField.querySelectorAll(".card").length){
@@ -316,6 +320,10 @@ class Game{
                 //    ********Deal 1 DMG to ALL********
                 this.deal1DmmgAll(this.playerCards[randomDefending])
                 this.deal1DmmgAll(this.enemyCards[this.enemyIndexToAttack])
+                //    *********************************
+                //    ********Fives +1/+1 to friendly********
+                this.gives1a1d(this.playerCards[randomDefending], this.playerCards)
+                this.gives1a1d(this.enemyCards[this.enemyIndexToAttack], this.enemyCards)
                 //    *********************************
             }
         }
@@ -494,6 +502,20 @@ class Game{
 
         }   
     }
+    gives1a1d(checkedCard, checkedCardField){
+        if( checkedCard.querySelector(".defence").innerText <=0 &&
+            checkedCard.classList.contains("gives1a1d")){
+                checkedCard.querySelector(".defence").classList.add("gives1a1de")
+                for(let i = 0; i<checkedCardField.length; i++){
+                    checkedCardField[i].querySelector(".defence").innerText = parseInt(checkedCardField[i].querySelector(".defence").innerText, 10) + 1
+                    checkedCard.querySelector(".defence").innerText = parseInt(checkedCard.querySelector(".defence").innerText, 10) - 1
+                    checkedCardField[i].querySelector(".defence").classList.add("green-text")
+                    checkedCardField[i].querySelector(".attack").innerText = parseInt(checkedCardField[i].querySelector(".defence").innerText, 10) + 1
+                    checkedCardField[i].querySelector(".attack").classList.add("green-text")
+                }
+            }
+
+    }
     addShield(ilgis, indexas, zaidejas){
         let randomindex = Math.floor(Math.random()*ilgis)
         if(randomindex != indexas){
@@ -512,14 +534,12 @@ class Game{
         }
     }
     deal1DmmgAll(checkedCard){
-        console.log("tikrinam ar inner text mazas", checkedCard.querySelector(".defence").innerText);
-        console.log("tikrinam ar pasirenkta korta turi dmg1", checkedCard.querySelector(".defence").innerText);
         
         if( checkedCard.querySelector(".defence").innerText <=0 &&
             checkedCard.classList.contains("deal1DmgAll")){
 
             checkedCard.querySelector(".defence").classList.add("aoeDmg")
-            console.log(checkedCard)
+
             for(let i =0; i<this.playerCards.length;i++){
                 if(this.playerCards[i].classList.contains("shield")){
                     this.playerCards[i].classList.remove("shield")
@@ -528,6 +548,7 @@ class Game{
                     this.playerCards[i].querySelector(".defence").classList.add("red-text")
                 }
             }
+            
             for(let i =0; i<this.enemyCards.length;i++){
                 if(this.enemyCards[i].classList.contains("shield")){
                     this.enemyCards[i].classList.remove("shield")
@@ -552,9 +573,7 @@ class Game{
             if(enemyHealth<=0){
                 textField.innerText = `First player WON!`
             }
-            
         } 
-        
     }
 }
 

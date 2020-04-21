@@ -63,7 +63,7 @@ let cards = {
         pictureAlt: "url(./img/unstable-ghoul.png)",
         canSummon: false,
         hasShield: false,
-        deathrattle: false,
+        deathrattle: true,
         taunt: true,
         deal1DmgAll: true
         },
@@ -75,7 +75,8 @@ let cards = {
         pictureAlt: "url(./img/spawn-of-nzoth.png)",
         canSummon: false,
         hasShield: false,
-        deathrattle: true
+        deathrattle: true,
+        gives1a1d: true
         }
 
     ],

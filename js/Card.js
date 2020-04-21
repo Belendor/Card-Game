@@ -18,6 +18,7 @@ class Card{
         this.battleCryReduced = false
         this.tount = false
         this.deal1DmgAll = false
+        this.gives1a1d = false
         this.consoleLog()
         this.generateCard()
         this.clickEvent()
@@ -37,6 +38,7 @@ class Card{
             this.deathrattle = selectedCard.deathrattle
             this.taunt = selectedCard.taunt
             this.deal1DmgAll = selectedCard.deal1DmgAll
+            this.gives1a1d = selectedCard.gives1a1d
 
             let klasesName = ""
             if(this.playerTurn){
@@ -46,7 +48,7 @@ class Card{
             }
    
         
-            let HTML = `<div class="  card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
+            let HTML = `<div class=" card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack player">${selectedCard.attack}</div>
@@ -78,6 +80,10 @@ class Card{
             if( this.deal1DmgAll){
                 this.HTML.classList.add("deal1DmgAll")
             }
+            if(  this.gives1a1d ){
+                this.HTML.classList.add("gives1a1d")
+            }
+
             
             this.game.playerCardObjects.push(this)
         }
@@ -91,6 +97,7 @@ class Card{
             this.deathrattle = selectedCard.deathrattle
             this.deal1DmgAll = selectedCard.deal1DmgAll
             this.taunt = selectedCard.taunt
+            this.gives1a1d = selectedCard.gives1a1d
 
             let klasesName = ""
             if(this.playerTurn){
@@ -132,7 +139,9 @@ class Card{
             if( this.deal1DmgAll){
                 this.HTML.classList.add("deal1DmgAll")
             }
-            
+            if(  this.gives1a1d ){
+                this.HTML.classList.add("gives1a1d")
+            }
             this.game.playerCardObjects.push(this)
         } 
     }
