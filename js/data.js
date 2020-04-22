@@ -42,6 +42,7 @@ let cards = {
         canSummon: false,
         hasShield: true,
         deathrattle: false,
+        addShield: true
         },
 
         {
@@ -54,6 +55,7 @@ let cards = {
         deathrattle: true,
         canSummon: false,
         hasShield: false,
+        addShield: true,
         },
         {name: "Unstable Ghoul",
         attack: 1,
@@ -76,7 +78,8 @@ let cards = {
         canSummon: false,
         hasShield: false,
         deathrattle: true,
-        gives1a1d: true
+        gives1a1d: true,
+        addShield: false,
         }
 
     ],

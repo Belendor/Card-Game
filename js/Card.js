@@ -19,18 +19,21 @@ class Card{
         this.tount = false
         this.deal1DmgAll = false
         this.gives1a1d = false
+        this.addShield = false
         this.consoleLog()
         this.generateCard()
         this.clickEvent()
+
     }
     consoleLog(){
-        console.log("Card generator")
     }
     generateCard(){
-        if(this.cardLevel === 1){
+        let radomCard =  Math.floor(Math.random()*6)
+        let selectedCard = cards.level1[radomCard]
+
+        if(this.cardLevel === 0){selectedCard = cards.level0[0]}
             
-            let radomCard =  Math.floor(Math.random()*6)
-            let selectedCard = cards.level1[radomCard]
+           
             this.attack = selectedCard.attack
             this.defence = selectedCard.defence
             this.canSummon = selectedCard.canSummon
@@ -39,6 +42,7 @@ class Card{
             this.taunt = selectedCard.taunt
             this.deal1DmgAll = selectedCard.deal1DmgAll
             this.gives1a1d = selectedCard.gives1a1d
+            this.addShield = selectedCard.addShield
 
             let klasesName = ""
             if(this.playerTurn){
@@ -52,6 +56,7 @@ class Card{
             <div class="card-description">${selectedCard.ability}</div>
             <div class="card-footer">
                 <div class="stat-box attack player">${selectedCard.attack}</div>
+                <div class="class-box"></div>
                 <div class="stat-box defence">${selectedCard.defence}</div>
             </div>
             </div>`
@@ -72,7 +77,10 @@ class Card{
                 this.HTML.querySelector(".card-description").classList.add("taunt")
             }
             if(this.deathrattle){
-                this.HTML.classList.add("deathrattle", "addShield")
+                this.HTML.classList.add("deathrattle")
+            } 
+            if(this.addShield){
+                this.HTML.classList.add("addShield")
             } 
             if(this.canSummon){
                 this.HTML.classList.add("summonCat")
@@ -84,66 +92,7 @@ class Card{
                 this.HTML.classList.add("gives1a1d")
             }
 
-            
             this.game.playerCardObjects.push(this)
-        }
-        if(this.cardLevel === 0){
-            let radomCard = 0
-            let selectedCard = cards.level0[radomCard]
-            this.attack = selectedCard.attack
-            this.defence = selectedCard.defence
-            this.canSummon = selectedCard.canSummon
-            this.hasShield = selectedCard.hasShield
-            this.deathrattle = selectedCard.deathrattle
-            this.deal1DmgAll = selectedCard.deal1DmgAll
-            this.taunt = selectedCard.taunt
-            this.gives1a1d = selectedCard.gives1a1d
-
-            let klasesName = ""
-            if(this.playerTurn){
-                klasesName = "player"
-            }else{
-                klasesName = "enemy"
-            }
-   
-        
-            let HTML = `<div class="  card ${klasesName}" style="background-image: ${selectedCard.pictureAlt}; background-size: cover; " class="card player" id="Nr${this.game.cardIndex}" draggable="${this.dragable}">
-            <div class="card-description">${selectedCard.ability}</div>
-            <div class="card-footer">
-                <div class="stat-box attack player">${selectedCard.attack}</div>
-                <div class="stat-box defence">${selectedCard.defence}</div>
-            </div>
-            </div>`
-            this.game.cardIndex++
-            
-
-            this.target.insertAdjacentHTML("beforeend", HTML )
-
-            let id = "#Nr"+ (this.game.cardIndex - 1)
-        
-            this.HTML = this.target.querySelector(id)
-
-            
-            if(this.hasShield){
-                this.HTML.classList.add("shield")
-            }
-            if(this.taunt){
-                this.HTML.querySelector(".card-description").classList.add("taunt")
-            }
-            if(this.deathrattle){
-                this.HTML.classList.add("deathrattle", "addShield")
-            } 
-            if(this.canSummon){
-                this.HTML.classList.add("summonCat")
-            }
-            if( this.deal1DmgAll){
-                this.HTML.classList.add("deal1DmgAll")
-            }
-            if(  this.gives1a1d ){
-                this.HTML.classList.add("gives1a1d")
-            }
-            this.game.playerCardObjects.push(this)
-        } 
     }
     clickEvent(){
         this.HTML.addEventListener("mousedown", ()=> { this.addEvents()} )
@@ -195,9 +144,6 @@ class Card{
                 this.game.cardsLeftToChoose()
                 playerHand.append(dragedCard)
             })
-    
-
-            console.log(playerField.querySelectorAll(".card").length, "tiek yra friendly zaideju");
             
                 if(document.querySelector(".choose-card").classList.contains("hidden")){
                     playerField.addEventListener("dragover",function(e){
@@ -261,9 +207,7 @@ class Card{
                 this.game.cardsLeftToChoose()
                 playerHand.append(dragedCard)
             })
-            console.log(playerField.querySelectorAll('.card').length, "tiek yra enemy zaideju");
-            
-           
+     
                 playerField.addEventListener("dragover",function(e){
                     e.preventDefault()
                 })
@@ -288,22 +232,17 @@ class Card{
         }
     }
     sumonCat(){
-        if(this.canSummon){
-            console.log("reikia summonint katina");
-            console.log("tiek player boar", this.DOM.querySelector('.player-field').querySelectorAll(".card").length);
-            console.log("tiek enemy board", this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length);
-            
-            
+        if(this.canSummon){   
             if(this.game.playerTurn){
                 if(this.DOM.querySelector('.player-field').querySelectorAll(".card").length < 5){
                     setTimeout(()=>{
-                        new Card(1,1, this.DOM.querySelector('.player-field'), true, this.GAME, this.game, 0, this.canSummon)
+                        new Card(1,1, this.DOM.querySelector('.player-field'), true, this.GAME, this.game, 0,true)
                     }, 0)
                 }
             }else{
                 if(this.DOM.querySelector('.enemy-field').querySelectorAll(".card").length < 5){
                     setTimeout(()=>{
-                        new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.GAME, this.game, 0, this.canSummon)
+                        new Card(1,1, this.DOM.querySelector('.enemy-field'), true, this.GAME, this.game, 0,false)
                     }, 0)
                 }
             }

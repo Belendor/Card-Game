@@ -71,7 +71,6 @@ class Game{
     }
 
     eventListeners(){
-        console.log("button events added");
         
         // generateCard.addEventListener("click",()=>{
         //     this.createPlayerCard()
@@ -149,13 +148,9 @@ class Game{
             slot2.innerHTML = ""
             slot3.innerHTML = ""
             slot4.innerHTML = ""
-            console.log("Generating card1");
             new Card(1,3, slot1, true, GAME, this, 1, true)
-            console.log("Generating card2");
             new Card(1,3, slot2, true, GAME, this, 1, true)
-            console.log("Generating card3");
             new Card(1,3, slot3, true, GAME, this, 1, true)
-            console.log("Generating card4");
             new Card(1,3, slot4, true, GAME, this, 1, true)
         }else{
             playerHand.innerHTML = ""
@@ -170,30 +165,6 @@ class Game{
         }
     }
 
-    // createEnemyCard(number){
-    //     if(number == 1){
-    //         this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
-    //     }
-    //     if(number == 2){
-    //         this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
-    //     }
-    //     if(number == 3){
-    //         this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
-    //         this.enemyCardObjects.push(new Card(4,4,enemyField, false, GAME, this, 13))
-    //     }
-    //     if(number == 4){
-    //         this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
-    //         this.enemyCardObjects.push(new Card(8,8,enemyField, false, GAME, this, 14))
-    //         this.enemyCardObjects.push(new Card(2,2,enemyField, false, GAME, this, 12))
-    //     }
-    //     if(number == 5){
-    //         this.enemyCardObjects.push(new Card(10,10,enemyField, false, GAME, this, 11))
-    //     }
-    //     if(number == 6){
-    //         this.enemyCardObjects.push(new Card(12,12,enemyField, false, GAME, this, 11))
-    //     }
-        
-    // }
 
     battle(firstPlayerAttacks){
         let playerBattlefield = []
@@ -242,9 +213,6 @@ class Game{
                 this.ckeckForShield(playerBattlefield[this.cardIndexToAttack], enemyBattlefield[randomDefending], this.playerCards[this.cardIndexToAttack])
                 this.ckeckForShield(enemyBattlefield[randomDefending], playerBattlefield[this.cardIndexToAttack], this.enemyCards[randomDefending])
                 // ************************************
-                
-                console.log("toks index kuris turi pult, player", this.cardIndexToAttack );
-                
 
                 playerBattlefield[this.cardIndexToAttack][1] = playerBattlefield[this.cardIndexToAttack][1] - enemyBattlefield[randomDefending][0]
                 enemyBattlefield[randomDefending][1] = enemyBattlefield[randomDefending][1] - playerBattlefield[this.cardIndexToAttack][0]
@@ -252,12 +220,20 @@ class Game{
                
                 if(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText != playerBattlefield[this.cardIndexToAttack][1]){
                     this.playerCards[this.cardIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
+                    this.playerCards[this.cardIndexToAttack].querySelector(".class-box").innerText =  playerBattlefield[this.cardIndexToAttack][1] - parseInt(this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText,10)
+                    this.playerCards[this.cardIndexToAttack].querySelector(".class-box").classList.add("hit")
+                    setTimeout(()=> {this.playerCards[this.cardIndexToAttack].querySelector(".class-box").classList.remove("hit")
+                                    this.playerCards[this.cardIndexToAttack].querySelector(".class-box").innerText = ""},1500)
                 }
                 this.playerCards[this.cardIndexToAttack].querySelector(".defence").innerText = playerBattlefield[this.cardIndexToAttack][1]
                 
                 
                 if(this.enemyCards[randomDefending].querySelector(".defence").innerText != enemyBattlefield[randomDefending][1]){
                     this.enemyCards[randomDefending].querySelector(".defence.stat-box").classList.add("red-text")
+                    this.enemyCards[randomDefending].querySelector(".class-box").innerText =  enemyBattlefield[randomDefending][1] - parseInt(this.enemyCards[randomDefending].querySelector(".defence").innerText,10) 
+                    this.enemyCards[randomDefending].querySelector(".class-box").classList.add("hit")
+                    setTimeout(()=> {this.enemyCards[randomDefending].querySelector(".class-box").classList.remove("hit")
+                                    this.enemyCards[randomDefending].querySelector(".class-box").innerText = "" },1500)
                 }
                 this.enemyCards[randomDefending].querySelector(".defence").innerText = enemyBattlefield[randomDefending][1]
         
@@ -288,9 +264,6 @@ class Game{
                 this.ckeckForShield(playerBattlefield[randomDefending], enemyBattlefield[this.enemyIndexToAttack], this.playerCards[randomDefending])
                 this.ckeckForShield(enemyBattlefield[this.enemyIndexToAttack], playerBattlefield[randomDefending], this.enemyCards[this.enemyIndexToAttack])
                 // ************************************
-                console.log("toks index kuris turi pulti, priesas", this.enemyIndexToAttack);
-                
-
 
                 playerBattlefield[randomDefending][1] = playerBattlefield[randomDefending][1] - enemyBattlefield[this.enemyIndexToAttack][0]
                 enemyBattlefield[this.enemyIndexToAttack][1] = enemyBattlefield[this.enemyIndexToAttack][1] - playerBattlefield[randomDefending][0]
@@ -299,6 +272,10 @@ class Game{
    
                 if(this.playerCards[randomDefending].querySelector(".defence").innerText != playerBattlefield[randomDefending][1]){
                     this.playerCards[randomDefending].querySelector(".defence.stat-box").classList.add("red-text")
+                    this.playerCards[randomDefending].querySelector(".class-box").innerText =  playerBattlefield[randomDefending][1] - parseInt(this.playerCards[randomDefending].querySelector(".defence").innerText,10) 
+                    this.playerCards[randomDefending].querySelector(".class-box").classList.add("hit")
+                    setTimeout(()=> {this.playerCards[randomDefending].querySelector(".class-box").classList.remove("hit")
+                                    this.playerCards[randomDefending].querySelector(".class-box").innerText = "" },1500)
                 }
                 
                 this.playerCards[randomDefending].querySelector(".defence").innerText = playerBattlefield[randomDefending][1]
@@ -306,6 +283,10 @@ class Game{
                 
                 if(this.enemyCards[this.enemyIndexToAttack].querySelector(".defence").innerText != enemyBattlefield[this.enemyIndexToAttack][1]){
                     this.enemyCards[this.enemyIndexToAttack].querySelector(".defence.stat-box").classList.add("red-text")
+                    this.enemyCards[this.enemyIndexToAttack].querySelector(".class-box").innerText =  enemyBattlefield[this.enemyIndexToAttack][1] - parseInt(this.enemyCards[this.enemyIndexToAttack].querySelector(".defence").innerText,10) 
+                    this.enemyCards[this.enemyIndexToAttack].querySelector(".class-box").classList.add("hit")
+                    setTimeout(()=> {this.enemyCards[this.enemyIndexToAttack].querySelector(".class-box").classList.remove("hit")
+                                    this.enemyCards[this.enemyIndexToAttack].querySelector(".class-box").innerText = "" },1500)
                 }
 
                 this.enemyCards[this.enemyIndexToAttack].querySelector(".defence").innerText = enemyBattlefield[this.enemyIndexToAttack][1]
@@ -427,7 +408,7 @@ class Game{
                 this.battle(true)
             }
         }
-        },5500)
+        },5000)
     }
     checkWhoWon(playerField, enemyField){
         let friendlyAliveCards = []
@@ -449,7 +430,7 @@ class Game{
         if(friendlyAliveCards.length == 0 && enemyAliveCards.length > 0){
 
             let likusiosKortos = enemyAliveCards.length
-            let HealthHTML = document.querySelector(".player-health")
+            let HealthHTML = document.querySelector(".player-health > p")
             for(let i=0; i<likusiosKortos;i++){
                 let cardAttack = allEnemyCards[enemyAliveCards[i]].querySelector(".attack").innerText
 
@@ -458,13 +439,19 @@ class Game{
 
                 HealthHTML.innerText = parseInt(HealthHTML.innerText,10) - parseInt(cardAttack,10)
                 HealthHTML.classList.add("red-text")
+
+                document.querySelector(".hp-hit-box-bottom").classList.add("hit")
+                document.querySelector(".hp-hit-box-bottom").innerText = "-" + parseInt(cardAttack,10) 
+
+                setTimeout(()=> {document.querySelector(".hp-hit-box-bottom").classList.remove("hit")
+                document.querySelector(".hp-hit-box-bottom").innerText = "" },1500)
             }
         }
 
         if(friendlyAliveCards.length > 0 && enemyAliveCards.length == 0){
 
             let likusiosKortos = friendlyAliveCards.length
-            let HealthHTML = document.querySelector(".enemy-health")
+            let HealthHTML = document.querySelector(".enemy-health > p")
             for(let i=0; i<likusiosKortos;i++){
 
                 let cardAttack = allFriendlyCards[friendlyAliveCards[i]].querySelector(".attack").innerText
@@ -474,16 +461,19 @@ class Game{
 
                 HealthHTML.innerText = parseInt(HealthHTML.innerText,10) - parseInt(cardAttack,10)
                 HealthHTML.classList.add("red-text")
+                
+                document.querySelector(".hp-hit-box-top").classList.add("hit")
+                document.querySelector(".hp-hit-box-top").innerText = "-" + parseInt(cardAttack,10) 
+
+                setTimeout(()=> {document.querySelector(".hp-hit-box-top").classList.remove("hit")
+                document.querySelector(".hp-hit-box-top").innerText = "" },1500)
             }
         }
     }
     tauntCheck(battlefieldCards){
         let randomDefending = Math.floor(Math.random()*battlefieldCards.length)
 
-        for(let i =0; i<battlefieldCards.length;i++){
-            console.log(battlefieldCards[i].querySelector(".card-description"));
-            console.log("ar turi taunt?", battlefieldCards[i].querySelector(".card-description").classList.contains("taunt"));
-            
+        for(let i =0; i<battlefieldCards.length;i++){    
             if(battlefieldCards[i].querySelector(".card-description").classList.contains("taunt")){
                 randomDefending = i
                 break
@@ -506,11 +496,12 @@ class Game{
         if( checkedCard.querySelector(".defence").innerText <=0 &&
             checkedCard.classList.contains("gives1a1d")){
                 checkedCard.querySelector(".defence").classList.add("gives1a1de")
+                checkedCard.querySelector(".defence").innerText = parseInt(checkedCard.querySelector(".defence").innerText, 10) - 1
+                checkedCard.querySelector(".attack").innerText = parseInt(checkedCard.querySelector(".attack").innerText, 10) - 1
                 for(let i = 0; i<checkedCardField.length; i++){
                     checkedCardField[i].querySelector(".defence").innerText = parseInt(checkedCardField[i].querySelector(".defence").innerText, 10) + 1
-                    checkedCard.querySelector(".defence").innerText = parseInt(checkedCard.querySelector(".defence").innerText, 10) - 1
                     checkedCardField[i].querySelector(".defence").classList.add("green-text")
-                    checkedCardField[i].querySelector(".attack").innerText = parseInt(checkedCardField[i].querySelector(".defence").innerText, 10) + 1
+                    checkedCardField[i].querySelector(".attack").innerText = parseInt(checkedCardField[i].querySelector(".attack").innerText, 10) + 1
                     checkedCardField[i].querySelector(".attack").classList.add("green-text")
                 }
             }
@@ -539,22 +530,81 @@ class Game{
             checkedCard.classList.contains("deal1DmgAll")){
 
             checkedCard.querySelector(".defence").classList.add("aoeDmg")
+            
+            console.log("Neeed to do aoe to all these Player cards", this.playerCards);
+            console.log("Neeed to do aoe to all these Enemey cards", this.enemyCards);
+            
 
-            for(let i =0; i<this.playerCards.length;i++){
+            for(let i = 0; i<this.playerCards.length;i++){
                 if(this.playerCards[i].classList.contains("shield")){
+                    console.log("total of player cards", this.playerCards.length);
+                    
+                    console.log("Removed shield from that one", this.playerCards[i]);
+
                     this.playerCards[i].classList.remove("shield")
-                }else{
+
+                }else if(!this.playerCards[i].classList.contains("shield")){
+                    console.log("total of player cards", this.playerCards.length);
+                    
+                    console.log("need to hit that player card", this.playerCards[i]);
+
                     this.playerCards[i].querySelector(".defence").innerText = parseInt(this.playerCards[i].querySelector(".defence").innerText, 10) - 1
                     this.playerCards[i].querySelector(".defence").classList.add("red-text")
+
+                    this.playerCards[i].querySelector(".class-box").classList.add("hit")
+                    this.playerCards[i].querySelector(".class-box").innerText =  -1 
+
+                    setTimeout(()=> {this.playerCards[i].querySelector(".class-box").classList.remove("hit")
+                                    this.playerCards[i].querySelector(".class-box").innerText = "" },1500)
+
+                    //     //    ********Deathrattle*************
+                    // this.checkDeathrattle(this.playerCards[i], i, playerField, this.playerCards)
+                    // // ***********************************
+                    // //    ********Deal 1 DMG to ALL********
+                    // this.deal1DmmgAll(this.playerCards[i])
+                    // //    *********************************
+                    // //    ********Fives +1/+1 to friendly********
+                    // this.gives1a1d(this.playerCards[i], this.playerCards)
+                    // //    **********
+                }else{
+                    console.log("total of player cards", this.playerCards.length);
+                    
+                    console.log("Sitos kortos kazkodel nebuvo hitinamos", this.playerCards[i]);
                 }
+
+
             }
             
             for(let i =0; i<this.enemyCards.length;i++){
                 if(this.enemyCards[i].classList.contains("shield")){
                     this.enemyCards[i].classList.remove("shield")
-                }else{
+                    console.log("total of enemy cards",  this.enemyCards.length);
+                    console.log("removed shield from that card", this.enemyCards[i]);
+                }else if(!this.enemyCards[i].classList.contains("shield")){
+                    console.log("total of enemy cards",  this.enemyCards.length);
+                    console.log("need to hit that card", this.enemyCards[i]);
+                    
+
                     this.enemyCards[i].querySelector(".defence").innerText = parseInt(this.enemyCards[i].querySelector(".defence").innerText, 10) - 1
                     this.enemyCards[i].querySelector(".defence").classList.add("red-text")
+
+                    this.enemyCards[i].querySelector(".class-box").classList.add("hit")
+                    this.enemyCards[i].querySelector(".class-box").innerText =  -1 
+                    setTimeout(()=> {this.enemyCards[i].querySelector(".class-box").classList.remove("hit")
+                                    this.enemyCards[i].querySelector(".class-box").innerText = "" },1500)
+
+                    // //    ********Deathrattle*************
+                    // this.checkDeathrattle(this.enemyCards[i], i, enemyField, this.enemyCards)
+                    // // ***********************************
+                    // //    ********Deal 1 DMG to ALL********
+                    // this.deal1DmmgAll(this.enemyCards[i])
+                    // //    *********************************
+                    // //    ********Fives +1/+1 to friendly********
+                    // this.gives1a1d(this.enemyCards[i], this.enemyCards)
+                    // //    **********         
+                }else{
+                    console.log("total of enemy cards",  this.enemyCards.length);
+                    console.log("sita enemy korta kazkodel praejo netrenkta", this.enemyCards[i]);
                 }
             }
         }
