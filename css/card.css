@@ -44,12 +44,14 @@
             position: absolute;
             left: 15px;
             bottom: 4px;
+            z-index: 1;
         }
         .card-footer > .stat-box.defence{
             display: inline-block;
             position: absolute;
             right: 8px;
             bottom: 4px;
+            z-index: 1;
         }
 
 .animation{
@@ -283,9 +285,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 5px solid red;
+    border: 10px solid red;
     animation-duration: 0.4s;
-    animation-iteration-count: 2;
+    animation-iteration-count: 3;
     animation-name: aoe;
     animation-fill-mode: forwards;
     opacity: 0
@@ -298,9 +300,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 5px solid red;
+    border: 10px solid red;
     animation-duration: 0.4s;
-    animation-iteration-count: 2;
+    animation-iteration-count: 3;
     animation-name: aoe;
     animation-delay: 0.2s;
     animation-fill-mode: forwards;
@@ -334,12 +336,12 @@
     width: 140px;
     top: -150px;
     left: -100px;
-    background-color: rgba(12, 134, 12, 0.603);
+    background-color: rgba(12, 134, 12, 0.76);
     border-radius: 10px;
     animation-name: moveRight;
     animation-fill-mode: forwards;
     animation-duration: 0.35s;
-    animation-iteration-count: 2;
+    animation-iteration-count: 3;
 }
 
 .gives1a1de:after{
@@ -349,12 +351,12 @@
     width: 140px;
     top: -150px;
     left: -120px;
-    background-color: rgba(12, 134, 12, 0.603);
+    background-color: rgba(12, 134, 12, 0.76);
     border-radius: 10px;
     animation-name: moveLeft ;
     animation-fill-mode: forwards;
     animation-duration: 0.35s;
-    animation-iteration-count: 2;
+    animation-iteration-count: 3;
 }
 
 @keyframes moveLeft{
