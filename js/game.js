@@ -63,7 +63,7 @@ class Game{
                     chooseCardScreen.classList.add("hidden")
                 }
             }
-        },10)
+        },5)
     }
 
     disableOponentCards(fieldToDissable){
@@ -96,7 +96,7 @@ class Game{
                     this.disableOponentCards(enemyField)
                     this.enableOppenentCards(playerField)
                 }else{
-                    alert("Laukas tuscias, nera kam kovoti, arba dar nepasirinkot visu kortu")
+                    alert("Laukas tuscias, nera kam kovoti, arba dar nepasirinkot visos kortos")
                 }
             }
         })
@@ -626,9 +626,9 @@ class Game{
     }
     checkLost(){
 
-    let playerHealth = document.querySelector(".player-health").innerText
-    let enemyHealth = document.querySelector(".enemy-health").innerText
-        
+    let playerHealth = document.querySelector(".player-health > p").innerText
+    let enemyHealth = document.querySelector(".enemy-health > p").innerText
+
     if( playerHealth <=0 || enemyHealth<=0 ){
             let textField = lostScreen.querySelector(".defeat-text")
             lostScreen.classList.remove("hidden")
