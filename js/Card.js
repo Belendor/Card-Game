@@ -20,15 +20,14 @@ class Card{
         this.deal1DmgAll = false
         this.gives1a1d = false
         this.addShield = false
-        this.consoleLog()
         this.generateCard()
         this.clickEvent()
 
     }
-    consoleLog(){
-    }
+
     generateCard(){
-        let radomCard =  Math.floor(Math.random()*6)
+        let radomCard = 0 
+        //  Math.floor(Math.random()*6)
         let selectedCard = cards.level1[radomCard]
 
         if(this.cardLevel === 0){selectedCard = cards.level0[0]}
@@ -99,9 +98,11 @@ class Card{
     }
 
     addEvents(){
+
         if(this.playerTurn){
             let playerField = document.querySelector('.player-field')
             let playerHand = document.querySelector('.field.player-hand')
+            let numberOfCardsInBattlefield = playerField.querySelectorAll(".card").length
             let dragedCard = ""
             this.HTML.addEventListener("dragstart", ()=>{
                 setTimeout(()=>{
@@ -155,7 +156,7 @@ class Card{
                     playerField.addEventListener("dragleave", function(){
                     })
                     playerField.addEventListener("drop",(e)=>{
-              
+                        if(numberOfCardsInBattlefield <=5){
                         if(this.HTML.classList.contains("summonCat")){
                             dragedCard.classList.remove("summonCat")
                                 
@@ -164,15 +165,16 @@ class Card{
                         }
                          
                         playerField.append(dragedCard)
+                        }
                     })
                 }
             
         }else{
             let playerHand = document.querySelector('.field.player-hand')
             let playerField = document.querySelector('.enemy-field')
+            let numberOfCardsInBattlefield = playerField.querySelectorAll(".card").length
             let dragedCard = ""
 
-        
             this.HTML.addEventListener("dragstart", ()=>{
                 setTimeout(()=>{
                     dragedCard = this.HTML
@@ -217,17 +219,17 @@ class Card{
                 playerField.addEventListener("dragleave", function(){
                 })
                 playerField.addEventListener("drop",(e)=>{
-                
+                if(numberOfCardsInBattlefield <=2){
+
                     if(this.HTML.classList.contains("summonCat")){
                         dragedCard.classList.remove("summonCat")
                             
                         this.sumonCat()
                         return playerField.append(dragedCard)
                     }
-                    if(playerField.querySelectorAll('.card').length <=6){
-                        playerField.append(dragedCard)
+                        
+                    playerField.append(dragedCard)
                     }
-
                 })
         }
     }
