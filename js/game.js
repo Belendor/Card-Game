@@ -189,6 +189,14 @@ class Game{
         this.playerCards = playerField.querySelectorAll(".card")
         this.enemyCards = enemyField.querySelectorAll(".card")
 
+        if( this.playerCards.length >= this.cardIndexToAttack){
+            this.cardIndexToAttack = 0
+        }
+
+        if( this.enemyCards.length >= this.enemyIndexToAttack){
+            this.enemyIndexToAttack = 0
+        }
+
         // Player Field to array****************
        for(let i =0;i<this.playerCards.length;i++){
         playerBattlefield.push([this.playerCards[i].querySelector(".attack").innerText, this.playerCards[i].querySelector(".defence").innerText])
